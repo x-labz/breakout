@@ -21,3 +21,7 @@ uint32_t HAL::getTimeStamp(void) {
 bool HAL::getAButton(void) {
     return PC::buttons.aBtn();
 }
+
+int16_t HAL::getRandom(uint16_t max ) {
+    return  (rand() % max) ;
+}

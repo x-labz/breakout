@@ -24,22 +24,22 @@
 
 
 #define DASH_HEIGHT 20
-#define DISP_X 200
+#define DISP_X 180
 #define DISP_X_OFFSET (220 - DISP_X) / 2
 #define DISP_Y 160 
 #define PLAY_AREA DISP_Y - DASH_HEIGHT 
 
 
 
-#define X_GAP 16
-#define W 14
+#define X_GAP 14
+#define W 12
 #define X_CNT (uint8_t)(DISP_X / X_GAP)
 #define X_OFF (uint8_t)((DISP_X - (X_CNT * X_GAP)) / 2) 
 
 #define Y_CNT 6
 #define Y_OFF 10
-#define Y_GAP 12
-#define H 10
+#define Y_GAP 10
+#define H  8
 
 #define PADDLE_W 20
 #define PADDLE_H 5
@@ -67,6 +67,8 @@ typedef struct {
 
 typedef struct
 {
+    uint16_t score;
+    bool lastBounceWasBrick;
     uint8_t game_state;
     Brick_t bricks[X_CNT*Y_CNT] ;
     uint16_t fps;

@@ -18,7 +18,6 @@ int main() {
     while (PC::isRunning()) {
         if (!PC::update())
             continue;
-
         breakout_render( & store);
         breakout_run();
     }

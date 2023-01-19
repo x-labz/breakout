@@ -12,20 +12,22 @@
  uint32_t last_ticks;
 
  void breakout_init(Breakout_store_t * p) {
-     if (p != NULL ) {
+     if (p != NULL) {
          store = p;
      }
-     
-     *store = {
+
+     * store = {
+         .score = 0,
+         .lastBounceWasBrick = false,
          .game_state = GAME_STATE_RDY,
          .bricks = {},
          .fps = 0,
-         .paddle_x = 0,
+         .paddle_x = (DISP_X - PADDLE_W) / 2 ,
          .paddle_speed = 0,
          .ball_x = (DISP_X / 2 - 1),
-         .ball_y = (DISP_Y / 2 - 1) + 20,
-         .ball_speed_x = 0.25,
-         .ball_speed_y = -0.65,
+         .ball_y = (DISP_Y / 2 - 1) + 40,
+         .ball_speed_x = (float)HAL::getRandom(100) / 200 - 0.25 ,
+         .ball_speed_y = -0.95,
          .brick_x = -1,
          .brick_y = -1,
          .coll_brick_p1 = {
@@ -57,8 +59,8 @@
  }
 
  float bounce(float speed) {
-     float variance = (rand() % 100) / 1000;
-    //  printf("%.1f", variance);
+     float variance = HAL::getRandom(100) / 1000;
+     
      return speed * -(1 + variance);
  }
 
@@ -126,12 +128,11 @@
 
  void bounce_paddle(void) {
      int16_t paddle_y = DISP_Y - 1 - DASH_HEIGHT - PADDLE_H;
-     if (store->ball_y > ((paddle_y - BALL_R)) && store->ball_x >= (store->paddle_x) && store->ball_x <= ((store->paddle_x + PADDLE_W))) {
+     if (store->ball_y >= ((paddle_y - BALL_R)) && store->ball_x >= (store->paddle_x ) && store->ball_x <= ((store->paddle_x + PADDLE_W ))) {
          store->ball_y = (paddle_y - BALL_R);
          store->ball_speed_y = bounce(store->ball_speed_y);
-         store->ball_speed_x += (float)store->paddle_speed / 10.0;
-
-        //  printf("S:%d", (int)(store->ball_speed_x * 1000));
+         store->ball_speed_x += (float) store->paddle_speed / 10.0;
+         store->lastBounceWasBrick = false; 
      }
  }
 
@@ -140,7 +141,7 @@
      Brick_t brick = store->bricks[brickID];
 
      Point_t result_p1, result_p2;
-     // float t_result = 999999;
+     float t_result = 999999;
      uint8_t dir_cnt = 0;
      Point_t dir[4] = {
          {
@@ -166,9 +167,8 @@
      // .  .
      // 3--4
 
-     // printf("------\n");
-     // printf("brick (%d,%d) \n", x, y);
      store->coll_brick_valid = false;
+     int8_t result_dir = -1;
      for (uint8_t ry = 0; ry != 2; ry++) {
          for (uint8_t rx = 0; rx != 2; rx++) {
              int8_t ball_speed_x_sign_neg = store->ball_speed_x < 0 ? -1 : 1;
@@ -187,11 +187,9 @@
              };
              Point_t brick_v = dir[dir_cnt];
 
-
-
-             float t = areLinesCrossing(ball_p, brick_p, ball_v, brick_v);
-             if (t >= 0) {
-                 // t_result = t;
+            float t = areLinesCrossing(ball_p, brick_p, ball_v, brick_v);
+             if (t >= 0 && t < t_result) {
+                 t_result = t;
                  result_p1.x = brick_p.x;
                  result_p1.y = brick_p.y;
                  result_p2.x = brick_p.x + brick_v.x;
@@ -202,36 +200,32 @@
                  store->coll_brick_p1.y = result_p1.y;
                  store->coll_brick_p2.x = result_p2.x;
                  store->coll_brick_p2.y = result_p2.y;
-                 // printf("(%f,%f)-(%.2f,%.2f) %.2f \n", brick_p.x, brick_p.y, brick_v.x, brick_v.y, t);
-
-                 if (dir[dir_cnt].x) {
-                     store->ball_speed_y = bounce(store->ball_speed_y);
-                 }
-                 if (dir[dir_cnt].y) {
-                     store->ball_speed_x = bounce(store->ball_speed_x);
-                 }
-                 return true;
+                
+                 result_dir = dir_cnt;
              }
 
              dir_cnt++;
          }
      }
 
-     return false;
-     // if (store->coll_brick_valid) {
-     //     store->coll_brick_p1.x = result_p1.x;
-     //     store->coll_brick_p1.y = result_p1.y;
-     //     store->coll_brick_p2.x = result_p2.x;
-     //     store->coll_brick_p2.y = result_p2.y;
-     //     // printf("--Result:%d,%d-%d,%d\n", result_p1.x, result_p1.y, result_p2.x, result_p2.y);
-     // }
+     if (result_dir >= 0) {
+         if (dir[result_dir].x) {
+             store->ball_speed_y = bounce(store->ball_speed_y);
+         }
+         if (dir[result_dir].y) {
+             store->ball_speed_x = bounce(store->ball_speed_x);
+         }
+     }
+
+     return result_dir >= 0;
+
  }
 
  void calc_brick_coll(void) {
      for (uint8_t i = 0; i != X_CNT * Y_CNT; i++) {
 
          Brick_t brick = store->bricks[i];
-         // store->bricks[i].type = 1;
+    
          if (brick.blocker > 0) {
              store->bricks[i].blocker--;
          }
@@ -244,7 +238,8 @@
                      store->bricks[i].blocker = 10;
                  }
                  store->bricks[i].type--;
-
+                store->score+= store->lastBounceWasBrick ? 20 : 10;
+                  store->lastBounceWasBrick = true ;
              }
          }
      }
@@ -257,9 +252,8 @@
  }
 
  void handleGameOver(void) {
-     if (store->game_state == GAME_STATE_GAME_OVER && HAL::getAButton()) {
-         breakout_init((Breakout_store_t*)NULL);
-        //  store->game_state = GAME_STATE_RDY;
+     if ((store->game_state == GAME_STATE_GAME_OVER || store->game_state == GAME_STATE_WIN) && HAL::getAButton()) {
+         breakout_init((Breakout_store_t * ) NULL);
      }
  }
 
