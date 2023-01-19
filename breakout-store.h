@@ -23,13 +23,11 @@
 // #define BALL_R 2
 
 
-#define DASH_HEIGHT 20
+#define DASH_HEIGHT 15
 #define DISP_X 180
 #define DISP_X_OFFSET (220 - DISP_X) / 2
-#define DISP_Y 160 
+#define DISP_Y 176
 #define PLAY_AREA DISP_Y - DASH_HEIGHT 
-
-
 
 #define X_GAP 14
 #define W 12
@@ -43,7 +41,7 @@
 
 #define PADDLE_W 20
 #define PADDLE_H 5
-#define BALL_R 2
+#define BALL_R 3
 
 enum {
    BRICK_OFF,

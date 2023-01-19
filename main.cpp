@@ -10,8 +10,11 @@ int main() {
     using PD = Pokitto::Display;
     PC::begin();
     PD::persistence = false;
-    PD::invisiblecolor = 0;
+    PD::loadRGBPalette(palettePico);
+    PD::setFont(fontZXSpec);
 
+    PD::setInvisibleColor(0);
+    
     Breakout_store_t store;
     breakout_init( & store);
 

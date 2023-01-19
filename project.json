@@ -2,7 +2,7 @@
 	"lastBuffer": "main.cpp",
 	"PNGFlags": {
 		"ALL": [
-			"palette=${appPath}/PokittoLib/Pokitto/POKITTO_CORE/PALETTES/palCGA.cpp"
+			"palette=${appPath}/PokittoLib/Pokitto/POKITTO_CORE/PALETTES/palPico.cpp"
 		]
 	},
 	"libs": {
@@ -386,6 +386,54 @@
 			"sdcard": false
 		},
 		"\\patterns.h": {
+			"sdcard": false
+		},
+		"\\New Bitmap Image.bmp": {
+			"sdcard": false
+		},
+		"\\t.bmp": {
+			"sdcard": false
+		},
+		"\\t.png": {
+			"sdcard": false
+		},
+		"\\t.h": {
+			"sdcard": false
+		},
+		"\\bricks.png": {
+			"sdcard": false
+		},
+		"\\bricks.h": {
+			"sdcard": false
+		},
+		"\\brick.png": {
+			"sdcard": false
+		},
+		"\\brick.h": {
+			"sdcard": false
+		},
+		"\\brick2.png": {
+			"sdcard": false
+		},
+		"\\brick2.h": {
+			"sdcard": false
+		},
+		"\\paddle.png": {
+			"sdcard": false
+		},
+		"\\paddle.h": {
+			"sdcard": false
+		},
+		"\\ball.png": {
+			"sdcard": false
+		},
+		"\\ball.h": {
+			"sdcard": false
+		},
+		"\\ball6.png": {
+			"sdcard": false
+		},
+		"\\ball6.h": {
 			"sdcard": false
 		}
 	},

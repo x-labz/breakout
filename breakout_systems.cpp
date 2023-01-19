@@ -130,8 +130,9 @@
      int16_t paddle_y = DISP_Y - 1 - DASH_HEIGHT - PADDLE_H;
      if (store->ball_y >= ((paddle_y - BALL_R)) && store->ball_x >= (store->paddle_x ) && store->ball_x <= ((store->paddle_x + PADDLE_W ))) {
          store->ball_y = (paddle_y - BALL_R);
-         store->ball_speed_y = bounce(store->ball_speed_y);
-         store->ball_speed_x += (float) store->paddle_speed / 10.0;
+         float accelerate = (float) store->paddle_speed / 20.0;
+         store->ball_speed_y = bounce(store->ball_speed_y)  - abs(accelerate)   ;
+         store->ball_speed_x += accelerate ;
          store->lastBounceWasBrick = false; 
      }
  }
