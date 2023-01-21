@@ -24,8 +24,9 @@
 
 
 #define DASH_HEIGHT 15
+#define DISP_TOTAL_X 220
 #define DISP_X 180
-#define DISP_X_OFFSET (220 - DISP_X) / 2
+#define DISP_X_OFFSET (DISP_TOTAL_X - DISP_X) / 2
 #define DISP_Y 176
 #define PLAY_AREA DISP_Y - DASH_HEIGHT 
 
@@ -50,6 +51,7 @@ enum {
 } ;
 
 enum {
+    GAME_STATE_START,
     GAME_STATE_RDY,
     GAME_STATE_RUN,
     GAME_STATE_GAME_OVER,
@@ -65,6 +67,7 @@ typedef struct {
 
 typedef struct
 {
+    uint8_t lives;
     uint16_t score;
     bool lastBounceWasBrick;
     uint8_t game_state;
@@ -76,8 +79,8 @@ typedef struct
     float ball_y;
     float ball_speed_x;
     float ball_speed_y;
-    int8_t brick_x;
-    int8_t brick_y;
+    // int8_t brick_x;
+    // int8_t brick_y;
     // Point_t coll_brick_p1;
     // Point_t coll_brick_p2;
     bool coll_brick_valid;

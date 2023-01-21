@@ -435,6 +435,18 @@
 		},
 		"\\ball6.h": {
 			"sdcard": false
+		},
+		"\\hearth.png": {
+			"sdcard": false
+		},
+		"\\hearth.h": {
+			"sdcard": false
+		},
+		"\\breakout_logo.png": {
+			"sdcard": false
+		},
+		"\\breakout_logo.h": {
+			"sdcard": false
 		}
 	},
 	"ideVersion": 10000,

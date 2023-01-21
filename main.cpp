@@ -14,13 +14,14 @@ int main() {
     PD::setFont(fontZXSpec);
 
     PD::setInvisibleColor(0);
-    
+
     Breakout_store_t store;
     breakout_init( & store);
 
     while (PC::isRunning()) {
         if (!PC::update())
             continue;
+
         breakout_render( & store);
         breakout_run();
     }

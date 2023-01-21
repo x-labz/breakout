@@ -6,17 +6,44 @@
 #include "brick2.h"
 #include "paddle.h"
 #include "ball6.h"
+#include "hearth.h"
+#include "breakout_logo.h"
 
 using PD = Pokitto::Display;
 
+
+void breakout_render_start(void) {
+    PD::setColor(9);
+    char text[32] ;
+    int16_t count = sprintf(text, "b r e a k o u t");
+    PD::setCursor( (DISP_TOTAL_X - count * fontZXSpec[0]) / 2 + 15, 20);
+    PD::print(text);
+    PD::setColor(15);
+    count = sprintf(text, "x-labz.net");
+    PD::setCursor( (DISP_TOTAL_X - count * fontZXSpec[0]) / 2 + 4, DISP_Y - 25);
+    PD::print(text);
+
+    PD::drawBitmap( (DISP_TOTAL_X - breakout_logo[0]) / 2 - 6, (DISP_Y - breakout_logo[1]) / 2, breakout_logo);
+
+}
+
 void breakout_render(Breakout_store_t * store) {
 
+    if (store->game_state == GAME_STATE_START) {
+        breakout_render_start();
+        return;
+    }
+
     PD::setColor(1);
-    PD::drawColumn(DISP_X_OFFSET + 0, 0, 175) ;
+    PD::drawColumn(DISP_X_OFFSET + 0, 0, 175);
     PD::drawColumn(DISP_X_OFFSET + DISP_X - 1, 0, 175);
-       PD::setColor(13);
-    PD::drawColumn(DISP_X_OFFSET -1, 0, 175) ;
-    PD::drawColumn(DISP_X_OFFSET + DISP_X , 0, 175);
+    PD::setColor(13);
+    PD::drawColumn(DISP_X_OFFSET - 1, 0, 175);
+    PD::drawColumn(DISP_X_OFFSET + DISP_X, 0, 175);
+
+    for (uint8_t i = 0; i != store->lives; i++) {
+        PD::drawBitmap(5, 5 + 16 * i, hearth);
+    }
 
     // // padle
     // PD::setColor(1);

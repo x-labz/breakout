@@ -17,19 +17,20 @@
      }
 
      * store = {
+         .lives = 1,
          .score = 0,
          .lastBounceWasBrick = false,
-         .game_state = GAME_STATE_RDY,
+         .game_state = GAME_STATE_START,
          .bricks = {},
          .fps = 0,
          .paddle_x = (DISP_X - PADDLE_W) / 2,
          .paddle_speed = 0,
          .ball_x = (DISP_X / 2 - 1),
          .ball_y = (DISP_Y / 2 - 1) + 40,
-         .ball_speed_x = 0, // (float) HAL::getRandom(100) / 200 - 0.25,
+         .ball_speed_x = (float) HAL::getRandom(100) / 200 - 0.25,
          .ball_speed_y = -0.95,
-         .brick_x = -1,
-         .brick_y = -1,
+        //  .brick_x = -1,
+        //  .brick_y = -1,
          //  .coll_brick_p1 = {
          //      0,
          //      0
@@ -99,16 +100,17 @@
          store->ball_x = (DISP_X - 1 - BALL_R);
          store->ball_speed_x = bounce(store->ball_speed_x);
      }
-     if (store->ball_y > (DISP_Y - 1)) {
-         store->ball_speed_x = 0;
-         store->ball_speed_y = 0;
+     if (store->ball_y > (DISP_Y - 1) && store->lives > 0) {
+         store->ball_y = (DISP_Y - 1 );
+         store->ball_speed_y = bounce(store->ball_speed_y);
+         store->lives--;
      }
 
  }
 
  void check_fall(void) {
-     int16_t paddle_y = DISP_Y - 1 - DASH_HEIGHT - PADDLE_H;
-     if (store->ball_y > (DISP_Y - 1 - DASH_HEIGHT)) {
+    //  int16_t paddle_y = DISP_Y - 1 - DASH_HEIGHT - PADDLE_H;
+     if (store->ball_y > (DISP_Y - 1 - DASH_HEIGHT) && store->ball_speed_y > 0 && store->lives == 0 ) {
          store->game_state = GAME_STATE_GAME_OVER;
      }
  }
@@ -128,7 +130,7 @@
 
  void bounce_paddle(void) {
      int16_t paddle_y = DISP_Y - 1 - DASH_HEIGHT - PADDLE_H;
-     if (store->ball_y >= ((paddle_y - BALL_R)) && store->ball_x >= (store->paddle_x - BALL_R) && store->ball_x <= ((store->paddle_x + PADDLE_W + BALL_R))) {
+     if (store->ball_y >= ((paddle_y - BALL_R)) && store->ball_x >= (store->paddle_x ) && store->ball_x <= ((store->paddle_x + PADDLE_W ))) {
          store->ball_y = (paddle_y - BALL_R);
          float accelerate = (float) store->paddle_speed / 20.0;
          store->ball_speed_y = bounce(store->ball_speed_y) - abs(accelerate);
@@ -267,11 +269,15 @@
      if (store->game_state == GAME_STATE_RDY && HAL::getAButton()) {
          store->game_state = GAME_STATE_RUN;
      }
+     if (store->game_state == GAME_STATE_START && HAL::getAButton()) {
+         store->game_state = GAME_STATE_RDY;
+     }
  }
 
  void handleGameOver(void) {
      if ((store->game_state == GAME_STATE_GAME_OVER || store->game_state == GAME_STATE_WIN) && HAL::getAButton()) {
          breakout_init((Breakout_store_t * ) NULL);
+         store->game_state = GAME_STATE_RDY ;
      }
  }
 

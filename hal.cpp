@@ -19,9 +19,12 @@ uint32_t HAL::getTimeStamp(void) {
 }
 
 bool HAL::getAButton(void) {
-    return PC::buttons.aBtn();
+    bool btn = PC::buttons.aBtn();
+    bool result = btn != lastAButton && btn == true;
+    lastAButton = btn;
+    return result;
 }
 
-int16_t HAL::getRandom(uint16_t max ) {
-    return  (rand() % max) ;
+int16_t HAL::getRandom(uint16_t max) {
+    return (rand() % max);
 }
