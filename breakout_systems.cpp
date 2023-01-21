@@ -22,22 +22,22 @@
          .game_state = GAME_STATE_RDY,
          .bricks = {},
          .fps = 0,
-         .paddle_x = (DISP_X - PADDLE_W) / 2 ,
+         .paddle_x = (DISP_X - PADDLE_W) / 2,
          .paddle_speed = 0,
          .ball_x = (DISP_X / 2 - 1),
          .ball_y = (DISP_Y / 2 - 1) + 40,
-         .ball_speed_x = (float)HAL::getRandom(100) / 200 - 0.25 ,
+         .ball_speed_x = 0, // (float) HAL::getRandom(100) / 200 - 0.25,
          .ball_speed_y = -0.95,
          .brick_x = -1,
          .brick_y = -1,
-         .coll_brick_p1 = {
-             0,
-             0
-         },
-         .coll_brick_p2 = {
-             0,
-             0
-         },
+         //  .coll_brick_p1 = {
+         //      0,
+         //      0
+         //  },
+         //  .coll_brick_p2 = {
+         //      0,
+         //      0
+         //  },
          .coll_brick_valid = false
      };
 
@@ -60,7 +60,7 @@
 
  float bounce(float speed) {
      float variance = HAL::getRandom(100) / 1000;
-     
+
      return speed * -(1 + variance);
  }
 
@@ -128,12 +128,12 @@
 
  void bounce_paddle(void) {
      int16_t paddle_y = DISP_Y - 1 - DASH_HEIGHT - PADDLE_H;
-     if (store->ball_y >= ((paddle_y - BALL_R)) && store->ball_x >= (store->paddle_x ) && store->ball_x <= ((store->paddle_x + PADDLE_W ))) {
+     if (store->ball_y >= ((paddle_y - BALL_R)) && store->ball_x >= (store->paddle_x - BALL_R) && store->ball_x <= ((store->paddle_x + PADDLE_W + BALL_R))) {
          store->ball_y = (paddle_y - BALL_R);
          float accelerate = (float) store->paddle_speed / 20.0;
-         store->ball_speed_y = bounce(store->ball_speed_y)  - abs(accelerate)   ;
-         store->ball_speed_x += accelerate ;
-         store->lastBounceWasBrick = false; 
+         store->ball_speed_y = bounce(store->ball_speed_y) - abs(accelerate);
+         store->ball_speed_x += accelerate;
+         store->lastBounceWasBrick = false;
      }
  }
 
@@ -146,21 +146,36 @@
      uint8_t dir_cnt = 0;
      Point_t dir[4] = {
          {
-             W,
-             0
+             W +  2 *BALL_R,
+                 0
          },
          {
              0,
-             H
+             H + 2 * BALL_R
          },
          {
              0,
-             -H,
+             -H - 2 * BALL_R,
          },
          {
 
-             -W,
+             -W - 2 *BALL_R,
              0
+         }
+     };
+
+     Point_t normals[4] {
+         {
+             0,
+             -1
+         }, {
+             1,
+             0
+         }, {-1,
+             0
+         }, {
+             0,
+             1
          }
      };
 
@@ -172,36 +187,34 @@
      int8_t result_dir = -1;
      for (uint8_t ry = 0; ry != 2; ry++) {
          for (uint8_t rx = 0; rx != 2; rx++) {
-             int8_t ball_speed_x_sign_neg = store->ball_speed_x < 0 ? -1 : 1;
-             int8_t ball_speed_y_sign_neg = store->ball_speed_y < 0 ? -1 : 1;
+             float fract = (float) BALL_R / (abs(store->ball_speed_x) + abs(store->ball_speed_y));
+             float x_add = store->ball_speed_x / fract * (float)(BALL_R);
+             float y_add = store->ball_speed_y / fract * (float)(BALL_R);
              Point_t ball_p = {
-                 (store->ball_x - (store->ball_speed_x + BALL_R * ball_speed_x_sign_neg)),
-                 (store->ball_y - (store->ball_speed_y + BALL_R * ball_speed_y_sign_neg))
+                 store->ball_x - store->ball_speed_x - x_add,
+                 store->ball_y - store->ball_speed_y - y_add
              };
              Point_t ball_v = {
-                 store->ball_speed_x + BALL_R * ball_speed_x_sign_neg * 2,
-                 store->ball_speed_y + BALL_R * ball_speed_y_sign_neg * 2
+                 store->ball_speed_x + 2 * x_add,
+                 store->ball_speed_y + 2 * y_add
              };
              Point_t brick_p = {
-                 brick.x + rx * W,
-                 brick.y + ry * H
+                 brick.x - BALL_R + rx * (W + 2 * BALL_R ),
+                 brick.y - BALL_R + ry * (H + 2 * BALL_R )
              };
              Point_t brick_v = dir[dir_cnt];
 
-            float t = areLinesCrossing(ball_p, brick_p, ball_v, brick_v);
-             if (t >= 0 && t < t_result) {
+             float t = areLinesCrossing(ball_p, brick_p, ball_v, brick_v);
+             bool opposite = isOpposite(ball_v, normals[dir_cnt]);
+             if (t >= 0 && t < t_result && opposite) {
+                //  printf("opp: %d , %d,%d , n: %d,%d \n ", opposite, 
+                //   (int)(ball_v.x * 100.0F) ,
+                //   (int)(ball_v.y * 100.0F) ,
+                //     (int)(normals[dir_cnt].x * 100.0F) ,
+                //      (int)(normals[dir_cnt].y * 100.0F) 
+                //  ) ;
                  t_result = t;
-                 result_p1.x = brick_p.x;
-                 result_p1.y = brick_p.y;
-                 result_p2.x = brick_p.x + brick_v.x;
-                 result_p2.y = brick_p.y + brick_v.y;
                  store->coll_brick_valid = true;
-
-                 store->coll_brick_p1.x = result_p1.x;
-                 store->coll_brick_p1.y = result_p1.y;
-                 store->coll_brick_p2.x = result_p2.x;
-                 store->coll_brick_p2.y = result_p2.y;
-                
                  result_dir = dir_cnt;
              }
 
@@ -209,13 +222,17 @@
          }
      }
 
-     if (result_dir >= 0) {
+     if (store->coll_brick_valid ) {
+
          if (dir[result_dir].x) {
+            //  printf("y bounce %d \n", (int)(store->ball_speed_y * 100.0F) );
              store->ball_speed_y = bounce(store->ball_speed_y);
          }
          if (dir[result_dir].y) {
+            //  printf("x bounce \n");
              store->ball_speed_x = bounce(store->ball_speed_x);
          }
+
      }
 
      return result_dir >= 0;
@@ -226,7 +243,7 @@
      for (uint8_t i = 0; i != X_CNT * Y_CNT; i++) {
 
          Brick_t brick = store->bricks[i];
-    
+
          if (brick.blocker > 0) {
              store->bricks[i].blocker--;
          }
@@ -239,8 +256,8 @@
                      store->bricks[i].blocker = 10;
                  }
                  store->bricks[i].type--;
-                store->score+= store->lastBounceWasBrick ? 20 : 10;
-                  store->lastBounceWasBrick = true ;
+                 store->score += store->lastBounceWasBrick ? 20 : 10;
+                 store->lastBounceWasBrick = true;
              }
          }
      }

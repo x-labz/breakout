@@ -19,3 +19,9 @@ float areLinesCrossing(Point_t p1, Point_t p2, Point_t v1, Point_t v2)
     return t >= 0 && s >= 0 && s <= 1  && t<=1 ? t : -1;
   
 }
+
+bool isOpposite( Point_t v, Point_t n ) {
+    if (  n.x == 0 && sgn(v.y) !=0 && sgn(v.y) != sgn(n.y)    ) return true;
+    if (  n.y == 0 && sgn(v.x) !=0 && sgn(v.x) != sgn(n.x)    ) return true;
+    return false;
+}   

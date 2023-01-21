@@ -78,7 +78,7 @@ typedef struct
     float ball_speed_y;
     int8_t brick_x;
     int8_t brick_y;
-    Point_t coll_brick_p1;
-    Point_t coll_brick_p2;
+    // Point_t coll_brick_p1;
+    // Point_t coll_brick_p2;
     bool coll_brick_valid;
 } Breakout_store_t;
