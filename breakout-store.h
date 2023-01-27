@@ -44,11 +44,14 @@
 #define PADDLE_H 5
 #define BALL_R 3
 
+#define SURPRISE_Y_MIN Y_CNT * Y_GAP + Y_OFF
+#define SURPRISE_Y_HEIGHT  30 
+
 enum {
-   BRICK_OFF,
-   BRICK_LIGHT,
-   BRICK_MEDIUM
-} ;
+    BRICK_OFF,
+    BRICK_LIGHT,
+    BRICK_MEDIUM
+};
 
 enum {
     GAME_STATE_START,
@@ -59,19 +62,35 @@ enum {
 };
 
 typedef struct {
-    uint8_t x; 
-    uint8_t y; 
+    uint8_t x;
+    uint8_t y;
     uint8_t type;
     uint8_t blocker;
-} Brick_t;
+}
+Brick_t;
 
-typedef struct
-{
+enum {
+    SURPRISE_NONE,
+    SURPRISE_HEARTH,
+    SURPRISE_MAX
+};
+
+typedef struct {
+    uint8_t x;
+    uint8_t y;
+    uint8_t type;
+    uint32_t lifetime;
+    uint32_t timestamp;
+}
+Surprise_t;
+
+typedef struct {
+    Surprise_t surprise;
     uint8_t lives;
     uint16_t score;
     bool lastBounceWasBrick;
     uint8_t game_state;
-    Brick_t bricks[X_CNT*Y_CNT] ;
+    Brick_t bricks[X_CNT * Y_CNT];
     uint16_t fps;
     int16_t paddle_x;
     int16_t paddle_speed;
@@ -84,4 +103,5 @@ typedef struct
     // Point_t coll_brick_p1;
     // Point_t coll_brick_p2;
     bool coll_brick_valid;
-} Breakout_store_t;
+}
+Breakout_store_t;

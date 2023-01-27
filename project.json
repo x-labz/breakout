@@ -447,6 +447,12 @@
 		},
 		"\\breakout_logo.h": {
 			"sdcard": false
+		},
+		"\\breakout_systems_surprises.cpp": {
+			"sdcard": false
+		},
+		"\\breakout_systems_surprises.h": {
+			"sdcard": false
 		}
 	},
 	"ideVersion": 10000,

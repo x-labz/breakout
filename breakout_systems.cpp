@@ -1,4 +1,4 @@
- #include "Pokitto.h"
+#include "math.h"
  #include "breakout_systems.h"
  #include "geometry-helpers.h"
  #include "hal.h"
@@ -17,6 +17,7 @@
      }
 
      * store = {
+         .surprise = {0,0,0,0,0},
          .lives = 1,
          .score = 0,
          .lastBounceWasBrick = false,
