@@ -46,6 +46,8 @@
 
 #define SURPRISE_Y_MIN Y_CNT * Y_GAP + Y_OFF
 #define SURPRISE_Y_HEIGHT  30 
+#define SURPRISE_R 10
+#define SURPRISE_LIN_NUM 18
 
 enum {
     BRICK_OFF,
@@ -75,12 +77,19 @@ enum {
     SURPRISE_MAX
 };
 
+enum {
+    SURPRISE_STATUS_OFF,
+    SURPRISE_STATUS_VISIBLE
+};
+
 typedef struct {
     uint8_t x;
     uint8_t y;
     uint8_t type;
     uint32_t lifetime;
     uint32_t timestamp;
+    uint8_t status;
+    uint8_t progress ;
 }
 Surprise_t;
 

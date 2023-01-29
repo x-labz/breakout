@@ -4,6 +4,7 @@
  #include "hal.h"
  #include "patterns.h"
  #include "stdio.h"
+ #include "breakout_systems_surprises.h"
 
  Breakout_store_t * store;
 
@@ -18,7 +19,7 @@
 
      * store = {
          .surprise = {0,0,0,0,0},
-         .lives = 1,
+         .lives = 0,
          .score = 0,
          .lastBounceWasBrick = false,
          .game_state = GAME_STATE_START,
@@ -292,6 +293,7 @@
          calc_brick_coll();
          check_fall();
          check_win();
+         surpriseSystem(store) ;
      }
      handleStart();
      handleGameOver();

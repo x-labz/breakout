@@ -8,22 +8,24 @@
 #include "ball6.h"
 #include "hearth.h"
 #include "breakout_logo.h"
+#include "math.h"
+#include "math-helpers.h"
 
 using PD = Pokitto::Display;
 
 
 void breakout_render_start(void) {
     PD::setColor(9);
-    char text[32] ;
+    char text[32];
     int16_t count = sprintf(text, "b r e a k o u t");
-    PD::setCursor( (DISP_TOTAL_X - count * fontZXSpec[0]) / 2 + 15, 20);
+    PD::setCursor((DISP_TOTAL_X - count * fontZXSpec[0]) / 2 + 15, 20);
     PD::print(text);
     PD::setColor(15);
     count = sprintf(text, "x-labz.net");
-    PD::setCursor( (DISP_TOTAL_X - count * fontZXSpec[0]) / 2 + 4, DISP_Y - 25);
+    PD::setCursor((DISP_TOTAL_X - count * fontZXSpec[0]) / 2 + 4, DISP_Y - 25);
     PD::print(text);
 
-    PD::drawBitmap( (DISP_TOTAL_X - breakout_logo[0]) / 2 - 6, (DISP_Y - breakout_logo[1]) / 2, breakout_logo);
+    PD::drawBitmap((DISP_TOTAL_X - breakout_logo[0]) / 2 - 6, (DISP_Y - breakout_logo[1]) / 2, breakout_logo);
 
 }
 
@@ -66,6 +68,30 @@ void breakout_render(Breakout_store_t * store) {
     // PD::fillCircle(DISP_X_OFFSET + store->ball_x, store->ball_y, BALL_R);
     PD::drawBitmap(DISP_X_OFFSET + store->ball_x - BALL_R, store->ball_y - BALL_R, ball6);
 
+    // surprise
+
+    Surprise_t * surprise_p = & (store->surprise);
+    if (surprise_p->status == SURPRISE_STATUS_VISIBLE && surprise_p->type != SURPRISE_NONE) {
+        switch (surprise_p->type) {
+            case SURPRISE_HEARTH:
+                {
+                    PD::drawBitmap(DISP_X_OFFSET + surprise_p->x - hearth[0] / 2 + 1, surprise_p->y - hearth[1] / 2 + 1, hearth);
+                    // PD::setColor(9);
+
+                    float x0 = DISP_X_OFFSET + surprise_p->x;
+                    float y0 = surprise_p->y;
+                    // PD::drawLine(x0, y0, DISP_X_OFFSET + store->ball_x, store->ball_y);
+                    PD::setColor(11);
+                    for (uint8_t i = 0; i != SURPRISE_LIN_NUM; i++) {
+                        if (i <= surprise_p->progress) continue;
+                        PD::drawLine(x0 + SURPRISE_R * cos_table[4 * i], y0 + SURPRISE_R * sin_table[4 * i], x0 + SURPRISE_R * cos_table[(4 * (i + 1))%72], y0 + SURPRISE_R * sin_table[(4 * (i + 1))%72]);
+                    };
+                    break;
+                }
+        }
+    }
+
+    // fps
 
     char text[32];
     PD::setColor(5);

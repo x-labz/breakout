@@ -453,6 +453,15 @@
 		},
 		"\\breakout_systems_surprises.h": {
 			"sdcard": false
+		},
+		"\\math-helpers.h": {
+			"sdcard": false
+		},
+		"\\lu9140faed4.tmp": {
+			"sdcard": false
+		},
+		"\\sin_cos_table.xlsx": {
+			"sdcard": false
 		}
 	},
 	"ideVersion": 10000,
