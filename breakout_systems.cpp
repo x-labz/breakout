@@ -5,6 +5,7 @@
  #include "patterns.h"
  #include "stdio.h"
  #include "breakout_systems_surprises.h"
+ #include "math-helpers.h"
 
  Breakout_store_t * store;
 
@@ -29,7 +30,7 @@
          .paddle_speed = 0,
          .ball_x = (DISP_X / 2 - 1),
          .ball_y = (DISP_Y / 2 - 1) + 40,
-         .ball_speed_x = (float) HAL::getRandom(100) / 200 - 0.25,
+         .ball_speed_x = (SQ15x16) HAL::getRandom(100) / 200 - 0.25,
          .ball_speed_y = -0.95,
         //  .brick_x = -1,
         //  .brick_y = -1,
@@ -61,8 +62,8 @@
      }
  }
 
- float bounce(float speed) {
-     float variance = HAL::getRandom(100) / 1000;
+ SQ15x16 bounce(SQ15x16 speed) {
+     SQ15x16 variance = HAL::getRandom(100) / 1000;
 
      return speed * -(1 + variance);
  }
@@ -134,8 +135,8 @@
      int16_t paddle_y = DISP_Y - 1 - DASH_HEIGHT - PADDLE_H;
      if (store->ball_y >= ((paddle_y - BALL_R)) && store->ball_x >= (store->paddle_x ) && store->ball_x <= ((store->paddle_x + PADDLE_W ))) {
          store->ball_y = (paddle_y - BALL_R);
-         float accelerate = (float) store->paddle_speed / 20.0;
-         store->ball_speed_y = bounce(store->ball_speed_y) - abs(accelerate);
+         SQ15x16 accelerate = (SQ15x16) store->paddle_speed / 20.0;
+         store->ball_speed_y = bounce(store->ball_speed_y) - q_abs(accelerate);
          store->ball_speed_x += accelerate;
          store->lastBounceWasBrick = false;
      }
@@ -146,7 +147,7 @@
      Brick_t brick = store->bricks[brickID];
 
      Point_t result_p1, result_p2;
-     float t_result = 999999;
+     SQ15x16 t_result = 999999;
      uint8_t dir_cnt = 0;
      Point_t dir[4] = {
          {
@@ -191,9 +192,9 @@
      int8_t result_dir = -1;
      for (uint8_t ry = 0; ry != 2; ry++) {
          for (uint8_t rx = 0; rx != 2; rx++) {
-             float fract = (float) BALL_R / (abs(store->ball_speed_x) + abs(store->ball_speed_y));
-             float x_add = store->ball_speed_x / fract * (float)(BALL_R);
-             float y_add = store->ball_speed_y / fract * (float)(BALL_R);
+             SQ15x16 fract = (SQ15x16) BALL_R / (q_abs(store->ball_speed_x) + q_abs(store->ball_speed_y));
+             SQ15x16 x_add = store->ball_speed_x / fract * (SQ15x16)(BALL_R);
+             SQ15x16 y_add = store->ball_speed_y / fract * (SQ15x16)(BALL_R);
              Point_t ball_p = {
                  store->ball_x - store->ball_speed_x - x_add,
                  store->ball_y - store->ball_speed_y - y_add
@@ -208,7 +209,7 @@
              };
              Point_t brick_v = dir[dir_cnt];
 
-             float t = areLinesCrossing(ball_p, brick_p, ball_v, brick_v);
+             SQ15x16 t = areLinesCrossing(ball_p, brick_p, ball_v, brick_v);
              bool opposite = isOpposite(ball_v, normals[dir_cnt]);
              if (t >= 0 && t < t_result && opposite) {
                 //  printf("opp: %d , %d,%d , n: %d,%d \n ", opposite, 
@@ -228,11 +229,11 @@
 
      if (store->coll_brick_valid ) {
 
-         if (dir[result_dir].x) {
+         if (dir[result_dir].x > 0) {
             //  printf("y bounce %d \n", (int)(store->ball_speed_y * 100.0F) );
              store->ball_speed_y = bounce(store->ball_speed_y);
          }
-         if (dir[result_dir].y) {
+         if (dir[result_dir].y > 0) {
             //  printf("x bounce \n");
              store->ball_speed_x = bounce(store->ball_speed_x);
          }

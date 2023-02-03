@@ -103,10 +103,10 @@ typedef struct {
     uint16_t fps;
     int16_t paddle_x;
     int16_t paddle_speed;
-    float ball_x;
-    float ball_y;
-    float ball_speed_x;
-    float ball_speed_y;
+    SQ15x16 ball_x;
+    SQ15x16 ball_y;
+    SQ15x16 ball_speed_x;
+    SQ15x16 ball_speed_y;
     // int8_t brick_x;
     // int8_t brick_y;
     // Point_t coll_brick_p1;

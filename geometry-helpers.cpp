@@ -7,15 +7,15 @@
 // t*sx-s*dx = bx - px
 // t*sy-s*dy = by - py
 
-float areLinesCrossing(Point_t p1, Point_t p2, Point_t v1, Point_t v2)
+SQ15x16 areLinesCrossing(Point_t p1, Point_t p2, Point_t v1, Point_t v2)
 {
-    float det = v1.x * -v2.y + v2.x * v1.y;
+    SQ15x16 det = v1.x * -v2.y + v2.x * v1.y;
     if (det == 0)
         return -1;
-    float detT = (p2.x - p1.x) * -v2.y + v2.x * (p2.y - p1.y);
-    float detS = v1.x * (p2.y - p1.y) - (p2.x - p1.x) * v1.y;
-    float t = detT / det;
-    float s = detS / det;
+    SQ15x16 detT = (p2.x - p1.x) * -v2.y + v2.x * (p2.y - p1.y);
+    SQ15x16 detS = v1.x * (p2.y - p1.y) - (p2.x - p1.x) * v1.y;
+    SQ15x16 t = detT / det;
+    SQ15x16 s = detS / det;
     return t >= 0 && s >= 0 && s <= 1  && t<=1 ? t : -1;
   
 }

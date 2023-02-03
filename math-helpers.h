@@ -1,7 +1,14 @@
 #pragma once 
 
+#include "FixedPoints.h"
+#include "FixedPointsCommon.h"
+
+template <typename T> T q_abs(T val) {
+    return ( val < T(0)) ? -val : val  ;
+}
+
 static
-const float sin_table[72] = {
+const SQ15x16 sin_table[72] = {
     0,
     0.0871557427476582,
     0.17364817766693,
@@ -77,7 +84,7 @@ const float sin_table[72] = {
 };
 
 static
-const float cos_table[72] = {
+const SQ15x16 cos_table[72] = {
     1,
     0.996194698091746,
     0.984807753012208,

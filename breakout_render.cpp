@@ -66,7 +66,7 @@ void breakout_render(Breakout_store_t * store) {
 
     // PD::setColor(3);
     // PD::fillCircle(DISP_X_OFFSET + store->ball_x, store->ball_y, BALL_R);
-    PD::drawBitmap(DISP_X_OFFSET + store->ball_x - BALL_R, store->ball_y - BALL_R, ball6);
+    PD::drawBitmap(DISP_X_OFFSET + static_cast<int16_t>(store->ball_x - BALL_R),static_cast<int16_t>( store->ball_y - BALL_R), ball6);
 
     // surprise
 
@@ -78,13 +78,13 @@ void breakout_render(Breakout_store_t * store) {
                     PD::drawBitmap(DISP_X_OFFSET + surprise_p->x - hearth[0] / 2 + 1, surprise_p->y - hearth[1] / 2 + 1, hearth);
                     // PD::setColor(9);
 
-                    float x0 = DISP_X_OFFSET + surprise_p->x;
-                    float y0 = surprise_p->y;
+                    SQ15x16 x0 = DISP_X_OFFSET + surprise_p->x;
+                    SQ15x16 y0 = surprise_p->y;
                     // PD::drawLine(x0, y0, DISP_X_OFFSET + store->ball_x, store->ball_y);
                     PD::setColor(11);
                     for (uint8_t i = 0; i != SURPRISE_LIN_NUM; i++) {
                         if (i <= surprise_p->progress) continue;
-                        PD::drawLine(x0 + SURPRISE_R * cos_table[4 * i], y0 + SURPRISE_R * sin_table[4 * i], x0 + SURPRISE_R * cos_table[(4 * (i + 1))%72], y0 + SURPRISE_R * sin_table[(4 * (i + 1))%72]);
+                        PD::drawLine( static_cast<int16_t>(x0 +SURPRISE_R * cos_table[4 * i]),static_cast<int16_t>( y0 + SURPRISE_R * sin_table[4 * i]), static_cast<int16_t>( x0 +SURPRISE_R * cos_table[(4 * (i + 1))%72]),  static_cast<int16_t>(y0 +SURPRISE_R * sin_table[(4 * (i + 1))%72]));
                     };
                     break;
                 }

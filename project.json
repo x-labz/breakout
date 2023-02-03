@@ -462,6 +462,54 @@
 		},
 		"\\sin_cos_table.xlsx": {
 			"sdcard": false
+		},
+		"\\FixedPoints": {
+			"sdcard": false
+		},
+		"\\FixedPoints.h": {
+			"sdcard": false
+		},
+		"\\FixedPointsCommon": {
+			"sdcard": false
+		},
+		"\\FixedPointsCommon.h": {
+			"sdcard": false
+		},
+		"\\FixedPoints\\Details.h": {
+			"sdcard": false
+		},
+		"\\FixedPoints\\FixedPoints.h": {
+			"sdcard": false
+		},
+		"\\FixedPoints\\SFixed.h": {
+			"sdcard": false
+		},
+		"\\FixedPoints\\SFixedFreeFunctions.h": {
+			"sdcard": false
+		},
+		"\\FixedPoints\\SFixedMemberFunctions.h": {
+			"sdcard": false
+		},
+		"\\FixedPoints\\UFixed.h": {
+			"sdcard": false
+		},
+		"\\FixedPoints\\UFixedFreeFunctions.h": {
+			"sdcard": false
+		},
+		"\\FixedPoints\\Utils.h": {
+			"sdcard": false
+		},
+		"\\FixedPoints\\UFixedMemberFunctions.h": {
+			"sdcard": false
+		},
+		"\\FixedPointsCommon\\FixedPointsCommon.h": {
+			"sdcard": false
+		},
+		"\\FixedPointsCommon\\SFixedCommon.h": {
+			"sdcard": false
+		},
+		"\\FixedPointsCommon\\UFixedCommon.h": {
+			"sdcard": false
 		}
 	},
 	"ideVersion": 10000,

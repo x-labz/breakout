@@ -1,6 +1,6 @@
 #include "Pokitto.h"
-
-
+#include "FixedPoints.h"
+#include "FixedPointsCommon.h"
 #include "breakout_systems.h"
 #include "breakout-store.h"
 #include "breakout_render.h"
