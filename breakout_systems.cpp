@@ -25,23 +25,14 @@
          .game_state = GAME_STATE_START,
          .bricks = {},
          .fps = 0,
-         .paddle_x = (DISP_X - PADDLE_W) / 2,
+         .paddle_x = (DISP_X - store->paddle_width) / 2,
          .paddle_speed = 0,
          .ball_x = (DISP_X / 2 - 1),
          .ball_y = (DISP_Y / 2 - 1) + 40,
          .ball_speed_x = (float) HAL::getRandom(100) / 200 - 0.25,
          .ball_speed_y = -0.95,
-        //  .brick_x = -1,
-        //  .brick_y = -1,
-         //  .coll_brick_p1 = {
-         //      0,
-         //      0
-         //  },
-         //  .coll_brick_p2 = {
-         //      0,
-         //      0
-         //  },
-         .coll_brick_valid = false
+         .coll_brick_valid = false,
+         .paddle_width = PADDLE_W 
      };
 
      createPattern(store, 0);
@@ -79,8 +70,9 @@
      x += store->paddle_speed;
      if (x < 0)
          x = 0;
-     if (x > DISP_X - PADDLE_W - 2)
-         x = DISP_X - PADDLE_W - 2;
+     if (x > DISP_X - store->paddle_width - 2){
+         x = DISP_X - store->paddle_width - 2;
+     }
      store->paddle_x = x;
  }
 
@@ -132,7 +124,7 @@
 
  void bounce_paddle(void) {
      int16_t paddle_y = DISP_Y - 1 - DASH_HEIGHT - PADDLE_H;
-     if (store->ball_y >= ((paddle_y - BALL_R)) && store->ball_x >= (store->paddle_x ) && store->ball_x <= ((store->paddle_x + PADDLE_W ))) {
+     if (store->ball_y >= ((paddle_y - BALL_R)) && store->ball_x >= (store->paddle_x ) && store->ball_x <= ((store->paddle_x + store->paddle_width ))) {
          store->ball_y = (paddle_y - BALL_R);
          float accelerate = (float) store->paddle_speed / 20.0;
          store->ball_speed_y = bounce(store->ball_speed_y) - abs(accelerate);
@@ -211,12 +203,6 @@
              float t = areLinesCrossing(ball_p, brick_p, ball_v, brick_v);
              bool opposite = isOpposite(ball_v, normals[dir_cnt]);
              if (t >= 0 && t < t_result && opposite) {
-                //  printf("opp: %d , %d,%d , n: %d,%d \n ", opposite, 
-                //   (int)(ball_v.x * 100.0F) ,
-                //   (int)(ball_v.y * 100.0F) ,
-                //     (int)(normals[dir_cnt].x * 100.0F) ,
-                //      (int)(normals[dir_cnt].y * 100.0F) 
-                //  ) ;
                  t_result = t;
                  store->coll_brick_valid = true;
                  result_dir = dir_cnt;

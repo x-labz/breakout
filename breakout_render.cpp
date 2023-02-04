@@ -5,11 +5,14 @@
 #include "brick.h"
 #include "brick2.h"
 #include "paddle.h"
+#include "paddle_w.h"
 #include "ball6.h"
 #include "hearth.h"
 #include "breakout_logo.h"
 #include "math.h"
 #include "math-helpers.h"
+#include "surprises.h"
+
 
 using PD = Pokitto::Display;
 
@@ -17,7 +20,7 @@ using PD = Pokitto::Display;
 void breakout_render_start(void) {
     PD::setColor(9);
     char text[32];
-    int16_t count = sprintf(text, "b r e a k o u t");
+    int16_t count = sprintf(text, "b r e a k o u t +");
     PD::setCursor((DISP_TOTAL_X - count * fontZXSpec[0]) / 2 + 15, 20);
     PD::print(text);
     PD::setColor(15);
@@ -50,7 +53,8 @@ void breakout_render(Breakout_store_t * store) {
     // // padle
     // PD::setColor(1);
     // PD::drawRect(DISP_X_OFFSET + 1 + store->paddle_x, PLAY_AREA - 1 - PADDLE_H, PADDLE_W, PADDLE_H);
-    PD::drawBitmap(DISP_X_OFFSET + 1 + store->paddle_x, PLAY_AREA - 1 - PADDLE_H, paddle);
+    PD::drawBitmap(DISP_X_OFFSET + 1 + store->paddle_x, PLAY_AREA - 1 - PADDLE_H, store->paddle_width > PADDLE_W ? paddle_w : paddle);
+    
 
     // bricks
     for (uint8_t i = 0; i != X_CNT * Y_CNT; i++) {
@@ -72,61 +76,58 @@ void breakout_render(Breakout_store_t * store) {
 
     Surprise_t * surprise_p = & (store->surprise);
     if (surprise_p->status == SURPRISE_STATUS_VISIBLE && surprise_p->type != SURPRISE_NONE) {
-        switch (surprise_p->type) {
-            case SURPRISE_HEARTH:
-                {
-                    PD::drawBitmap(DISP_X_OFFSET + surprise_p->x - hearth[0] / 2 + 1, surprise_p->y - hearth[1] / 2 + 1, hearth);
-                    // PD::setColor(9);
+        const uint8_t * bitmap = surprises[surprise_p->type - 1].bitmap;
+        
+        PD::drawBitmap(DISP_X_OFFSET + surprise_p->x - bitmap[0] / 2 , surprise_p->y - bitmap[1] / 2 , bitmap);
 
-                    float x0 = DISP_X_OFFSET + surprise_p->x;
-                    float y0 = surprise_p->y;
-                    // PD::drawLine(x0, y0, DISP_X_OFFSET + store->ball_x, store->ball_y);
-                    PD::setColor(11);
-                    for (uint8_t i = 0; i != SURPRISE_LIN_NUM; i++) {
-                        if (i <= surprise_p->progress) continue;
-                        PD::drawLine(x0 + SURPRISE_R * cos_table[4 * i], y0 + SURPRISE_R * sin_table[4 * i], x0 + SURPRISE_R * cos_table[(4 * (i + 1))%72], y0 + SURPRISE_R * sin_table[(4 * (i + 1))%72]);
-                    };
-                    break;
-                }
-        }
+        float x0 = DISP_X_OFFSET + surprise_p->x;
+        float y0 = surprise_p->y;
+
+        PD::setColor(11);
+        for (uint8_t i = 0; i != SURPRISE_LIN_NUM; i++) {
+            if (i <= surprise_p->progress) continue;
+            PD::drawLine(x0 + SURPRISE_R * cos_table[4 * i], y0 + SURPRISE_R * sin_table[4 * i], x0 + SURPRISE_R * cos_table[(4 * (i + 1)) % 72], y0 + SURPRISE_R * sin_table[(4 * (i + 1)) % 72]);
+        };
+
     }
 
-    // fps
 
-    char text[32];
-    PD::setColor(5);
-    int16_t count = sprintf(text, "fps %d", store->fps);
-    PD::setCursor(DISP_X_OFFSET + (DISP_X - count * fontZXSpec[0]) / 2, 0);
+// fps
+
+char text[32];
+PD::setColor(5);
+int16_t count = sprintf(text, "fps %d", store->fps);
+PD::setCursor(DISP_X_OFFSET + (DISP_X - count * fontZXSpec[0]) / 2, 0);
+PD::print(text);
+
+// score
+PD::setColor(9);
+count = sprintf(text, "score %d", store->score);
+PD::setCursor(DISP_X_OFFSET + (DISP_X - count * fontZXSpec[0]) / 2, DISP_Y - 12);
+PD::print(text);
+
+if (store->game_state == GAME_STATE_RDY) {
+    PD::setColor(14);
+    int16_t count = sprintf(text, "Get ready!");
+    PD::setCursor(DISP_X_OFFSET + (DISP_X - count * fontZXSpec[0]) / 2, DISP_Y / 2 + 5);
+    PD::print(text);
+}
+
+if (store->game_state == GAME_STATE_GAME_OVER) {
+    PD::setColor(4);
+    int16_t count = sprintf(text, "Game over!");
+    PD::setCursor(DISP_X_OFFSET + (DISP_X - count * fontZXSpec[0]) / 2, DISP_Y / 2 + 5);
     PD::print(text);
 
-    // score
-    PD::setColor(9);
-    count = sprintf(text, "score %d", store->score);
-    PD::setCursor(DISP_X_OFFSET + (DISP_X - count * fontZXSpec[0]) / 2, DISP_Y - 12);
+}
+
+if (store->game_state == GAME_STATE_WIN) {
+    PD::setColor(15);
+    int16_t count = sprintf(text, "You win!");
+    PD::setCursor(DISP_X_OFFSET + (DISP_X - count * fontZXSpec[0]) / 2, DISP_Y / 2 + 5);
     PD::print(text);
 
-    if (store->game_state == GAME_STATE_RDY) {
-        PD::setColor(14);
-        int16_t count = sprintf(text, "Get ready!");
-        PD::setCursor(DISP_X_OFFSET + (DISP_X - count * fontZXSpec[0]) / 2, DISP_Y / 2 + 5);
-        PD::print(text);
-    }
-
-    if (store->game_state == GAME_STATE_GAME_OVER) {
-        PD::setColor(4);
-        int16_t count = sprintf(text, "Game over!");
-        PD::setCursor(DISP_X_OFFSET + (DISP_X - count * fontZXSpec[0]) / 2, DISP_Y / 2 + 5);
-        PD::print(text);
-
-    }
-
-    if (store->game_state == GAME_STATE_WIN) {
-        PD::setColor(15);
-        int16_t count = sprintf(text, "You win!");
-        PD::setCursor(DISP_X_OFFSET + (DISP_X - count * fontZXSpec[0]) / 2, DISP_Y / 2 + 5);
-        PD::print(text);
-
-    }
+}
 
 
 }

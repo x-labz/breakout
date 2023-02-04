@@ -74,12 +74,15 @@ Brick_t;
 enum {
     SURPRISE_NONE,
     SURPRISE_HEARTH,
+    SURPRISE_INC_SPEED,
+    SURPRISE_INC_PADDLE_W,
     SURPRISE_MAX
 };
 
 enum {
     SURPRISE_STATUS_OFF,
-    SURPRISE_STATUS_VISIBLE
+    SURPRISE_STATUS_VISIBLE,
+    SURPRISE_STATUS_RUN
 };
 
 typedef struct {
@@ -107,10 +110,7 @@ typedef struct {
     float ball_y;
     float ball_speed_x;
     float ball_speed_y;
-    // int8_t brick_x;
-    // int8_t brick_y;
-    // Point_t coll_brick_p1;
-    // Point_t coll_brick_p2;
     bool coll_brick_valid;
+    uint8_t paddle_width;
 }
 Breakout_store_t;
