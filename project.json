@@ -543,6 +543,33 @@
 		},
 		"\\paddle_w.h": {
 			"sdcard": false
+		},
+		"\\bomb.png": {
+			"sdcard": false
+		},
+		"\\bomb.h": {
+			"sdcard": false
+		},
+		"\\ram.png": {
+			"sdcard": false
+		},
+		"\\ram.h": {
+			"sdcard": false
+		},
+		"\\breakout+.bin": {
+			"sdcard": false
+		},
+		"\\hal copy.h": {
+			"sdcard": false
+		},
+		"\\hal copy.cpp": {
+			"sdcard": false
+		},
+		"\\hal-pokitto.cpp": {
+			"sdcard": false
+		},
+		"\\hal-pokitto.h": {
+			"sdcard": false
 		}
 	},
 	"ideVersion": 10000,

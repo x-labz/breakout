@@ -2,6 +2,7 @@
 #include "stdio.h"
 #include "hal.h"
 #include "surprises.h"
+#include "math.h"
 
 void surpriseSystem(Breakout_store_t * p) {
     generateSurprise(p);
@@ -12,19 +13,24 @@ void surpriseSystem(Breakout_store_t * p) {
 void generateSurprise(Breakout_store_t * p) {
     Surprise_t * surprise_p = & (p->surprise);
 
-    if (surprise_p->type != SURPRISE_NONE) return;
+    if (surprise_p->type != SURPRISE_NONE)
+        return;
+
+    surprise_p->x = X_OFF + SURPRISE_R + HAL::getRandom(DISP_X - (X_OFF + SURPRISE_R) * 2);
+    surprise_p->y = SURPRISE_Y_MIN + HAL::getRandom(SURPRISE_Y_HEIGHT);
+
+    if (abs(surprise_p->x - (int16_t) p->ball_x) < 35 || abs(surprise_p->y - (int16_t) p->ball_y) < 35)
+        return;
 
     surprise_p->timestamp = 2000 + HAL::getRandom(4000) + HAL::getTimeStamp();
     surprise_p->lifetime = 15000;
-    surprise_p->type =  1 + HAL::getRandom(SURPRISE_MAX - 1);
+    surprise_p->type = 1 + HAL::getRandom(SURPRISE_MAX - 1);
 
     if (surprise_p->type > 0) {
         ( * surprises[surprise_p->type - 1].generate)(surprise_p, p);
     }
 
     surprise_p->status = SURPRISE_STATUS_OFF;
-    surprise_p->x = X_OFF + SURPRISE_R + HAL::getRandom(DISP_X - (X_OFF + SURPRISE_R) * 2);
-    surprise_p->y = SURPRISE_Y_MIN + HAL::getRandom(SURPRISE_Y_HEIGHT);
 }
 
 void run(Breakout_store_t * p) {
@@ -38,7 +44,8 @@ void run(Breakout_store_t * p) {
         surprise_p->type = SURPRISE_NONE;
     }
     if (surprise_p->status == SURPRISE_STATUS_RUN && now > surprise_p->timestamp + surprise_p->lifetime) {
-        ( * surprises[surprise_p->type - 1].destroy)(surprise_p, p);
+        if (surprise_p->type > 0)
+            ( * surprises[surprise_p->type - 1].destroy)(surprise_p, p);
         surprise_p->status = SURPRISE_STATUS_OFF;
         surprise_p->type = SURPRISE_NONE;
     }
@@ -46,13 +53,15 @@ void run(Breakout_store_t * p) {
         surprise_p->progress = (uint8_t)(((now - surprise_p->timestamp) * SURPRISE_LIN_NUM) / surprise_p->lifetime);
     }
     if (surprise_p->status == SURPRISE_STATUS_RUN) {
-        ( * surprises[surprise_p->type - 1].run)(surprise_p, p);
+        if (surprise_p->type > 0)
+            ( * surprises[surprise_p->type - 1].run)(surprise_p, p);
     }
 }
 
 void checkSurpriseHit(Breakout_store_t * p) {
     Surprise_t * surprise_p = & (p->surprise);
-    if (surprise_p->status != SURPRISE_STATUS_VISIBLE) return;
+    if (surprise_p->status != SURPRISE_STATUS_VISIBLE)
+        return;
 
     int16_t dx = surprise_p->x - (int16_t)(p->ball_x);
     int16_t dy = surprise_p->y - (int16_t)(p->ball_y);
@@ -61,7 +70,6 @@ void checkSurpriseHit(Breakout_store_t * p) {
         surprise_p->status = SURPRISE_STATUS_RUN;
         uint32_t now = HAL::getTimeStamp();
         surprise_p->timestamp = now;
-        ( * surprises[surprise_p->type - 1].hit)(surprise_p, p);
-
+        if (surprise_p->type > 0)( * surprises[surprise_p->type - 1].hit)(surprise_p, p);
     }
 }

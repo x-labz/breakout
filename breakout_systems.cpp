@@ -13,6 +13,7 @@
  uint32_t last_ticks;
 
  void breakout_init(Breakout_store_t * p) {
+    HAL::init() ;
      if (p != NULL) {
          store = p;
      }
@@ -22,6 +23,7 @@
          .lives = 0,
          .score = 0,
          .lastBounceWasBrick = false,
+         .disableBrickBounce = false,
          .game_state = GAME_STATE_START,
          .bricks = {},
          .fps = 0,
@@ -30,7 +32,7 @@
          .ball_x = (DISP_X / 2 - 1),
          .ball_y = (DISP_Y / 2 - 1) + 40,
          .ball_speed_x = (float) HAL::getRandom(100) / 200 - 0.25,
-         .ball_speed_y = -0.95,
+         .ball_speed_y = -1.5,
          .coll_brick_valid = false,
          .paddle_width = PADDLE_W 
      };
@@ -85,19 +87,23 @@
      if (store->ball_x < (BALL_R)) {
          store->ball_x = (BALL_R);
          store->ball_speed_x = bounce(store->ball_speed_x);
+         store->disableBrickBounce = false;
      }
      if (store->ball_y < (BALL_R)) {
          store->ball_y = (BALL_R);
          store->ball_speed_y = bounce(store->ball_speed_y);
+         store->disableBrickBounce = false;
      }
      if (store->ball_x > ((DISP_X - 1 - BALL_R))) {
          store->ball_x = (DISP_X - 1 - BALL_R);
          store->ball_speed_x = bounce(store->ball_speed_x);
+         store->disableBrickBounce = false;
      }
      if (store->ball_y > (DISP_Y - 1) && store->lives > 0) {
          store->ball_y = (DISP_Y - 1 );
          store->ball_speed_y = bounce(store->ball_speed_y);
          store->lives--;
+         store->disableBrickBounce = false;
      }
 
  }
@@ -212,7 +218,7 @@
          }
      }
 
-     if (store->coll_brick_valid ) {
+     if (store->coll_brick_valid && !store->disableBrickBounce) {
 
          if (dir[result_dir].x) {
             //  printf("y bounce %d \n", (int)(store->ball_speed_y * 100.0F) );
@@ -241,11 +247,15 @@
              (store->ball_y > brick.y - BALL_R && store->ball_y < brick.y + Y_GAP + BALL_R)) {
 
              bool coll = calc_brick(i);
-             if (coll) {
-                 if (store->bricks[i].type > 1) {
+             if (coll ) {
+                 if (store->bricks[i].type > 1 && store->disableBrickBounce == false) {
                      store->bricks[i].blocker = 10;
                  }
+                 
                  store->bricks[i].type--;
+                 if ( store->disableBrickBounce ) {
+                     store->bricks[i].type = 0;
+                 }
                  store->score += store->lastBounceWasBrick ? 20 : 10;
                  store->lastBounceWasBrick = true;
              }

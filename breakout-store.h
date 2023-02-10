@@ -45,9 +45,11 @@
 #define BALL_R 3
 
 #define SURPRISE_Y_MIN Y_CNT * Y_GAP + Y_OFF
-#define SURPRISE_Y_HEIGHT  30 
+#define SURPRISE_Y_HEIGHT  35
 #define SURPRISE_R 10
 #define SURPRISE_LIN_NUM 18
+
+#define SURPRISE_BOMB_SPEED 2
 
 enum {
     BRICK_OFF,
@@ -76,6 +78,8 @@ enum {
     SURPRISE_HEARTH,
     SURPRISE_INC_SPEED,
     SURPRISE_INC_PADDLE_W,
+    SURPRISE_BOMB,
+    SURPRISE_RAM,
     SURPRISE_MAX
 };
 
@@ -101,6 +105,7 @@ typedef struct {
     uint8_t lives;
     uint16_t score;
     bool lastBounceWasBrick;
+    bool disableBrickBounce;
     uint8_t game_state;
     Brick_t bricks[X_CNT * Y_CNT];
     uint16_t fps;
