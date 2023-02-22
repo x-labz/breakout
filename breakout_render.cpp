@@ -20,11 +20,11 @@ void breakout_render_start(void)
     HAL::displaySetColor(9);
     char text[32];
     int16_t count = sprintf(text, "b r e a k o u t +");
-    HAL::displaySetCursor((DISP_TOTAL_X - count * HAL::getFontCharX()) / 2 + 15, 20);
+    HAL::displaySetCursor((DISP_TOTAL_X - count * HAL::getFontCharX()) / 2 , 20);
     HAL::displayPrint(text);
     HAL::displaySetColor(15);
     count = sprintf(text, "x-labz.net");
-    HAL::displaySetCursor((DISP_TOTAL_X - count * HAL::getFontCharX()) / 2 + 4, DISP_Y - 25);
+    HAL::displaySetCursor((DISP_TOTAL_X - count * HAL::getFontCharX()) / 2 , DISP_Y - 25);
     HAL::displayPrint(text);
     HAL::displayDrawBitmap((DISP_TOTAL_X - breakout_logo[0]) / 2 - 6, (DISP_Y - breakout_logo[1]) / 2, breakout_logo);
 }
@@ -48,9 +48,11 @@ void breakout_render(Breakout_store_t *store)
         HAL::displayDrawColumn(DISP_X_OFFSET + DISP_X, 0, DISP_Y - 1);
     }
 
+    // LIVES -HEARTH
+
     for (uint8_t i = 0; i != store->lives; i++)
     {
-        HAL::displayDrawBitmap(5, 5 + 16 * i, hearth);
+        HAL::displayDrawBitmap(HEARTH_X_OFFSET + HEARTH_X_ADVANCE * i, HEARTH_Y_OFFSET + HEARTH_Y_ADVANCE * i, hearth);
     }
 
     // // padle
