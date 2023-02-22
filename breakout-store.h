@@ -70,5 +70,8 @@ typedef struct {
     float ball_speed_y;
     bool coll_brick_valid;
     uint8_t paddle_width;
+    uint8_t shake;
+    int8_t shake_dir;
+    int8_t disp_x_offset;
 }
 Breakout_store_t;

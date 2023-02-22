@@ -570,6 +570,9 @@
 		},
 		"\\hal-pokitto.h": {
 			"sdcard": false
+		},
+		"\\README.md": {
+			"sdcard": false
 		}
 	},
 	"ideVersion": 10000,

@@ -19,7 +19,10 @@ int main()
             continue;
 
         breakout_render(&store);
-        breakout_run();
+        bool keepRunning = breakout_run();
+        if (!keepRunning) {
+            breakout_init(&store);
+        }
     }
 
     return 0;

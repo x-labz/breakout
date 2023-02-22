@@ -38,14 +38,14 @@ void breakout_render(Breakout_store_t *store)
         return;
     }
 
-    if (DISP_X_OFFSET > 0)
+    if (DISP_X_OFFSET + store->disp_x_offset > 0)
     {
         HAL::displaySetColor(1);
-        HAL::displayDrawColumn(DISP_X_OFFSET + 0, 0, DISP_Y - 1);
-        HAL::displayDrawColumn(DISP_X_OFFSET + DISP_X - 1, 0, DISP_Y - 1);
+        HAL::displayDrawColumn(DISP_X_OFFSET + store->disp_x_offset + 0, 0, DISP_Y - 1);
+        HAL::displayDrawColumn(DISP_X_OFFSET + store->disp_x_offset + DISP_X - 1, 0, DISP_Y - 1);
         HAL::displaySetColor(13);
-        HAL::displayDrawColumn(DISP_X_OFFSET - 1, 0, DISP_Y - 1);
-        HAL::displayDrawColumn(DISP_X_OFFSET + DISP_X, 0, DISP_Y - 1);
+        HAL::displayDrawColumn(DISP_X_OFFSET + store->disp_x_offset - 1, 0, DISP_Y - 1);
+        HAL::displayDrawColumn(DISP_X_OFFSET + store->disp_x_offset + DISP_X, 0, DISP_Y - 1);
     }
 
     // LIVES -HEARTH
@@ -57,20 +57,20 @@ void breakout_render(Breakout_store_t *store)
 
     // // padle
 
-    HAL::displayDrawBitmap(DISP_X_OFFSET + 1 + store->paddle_x, PLAY_AREA - 1 - PADDLE_H, store->paddle_width > PADDLE_W ? paddle_w : paddle);
+    HAL::displayDrawBitmap(DISP_X_OFFSET + store->disp_x_offset + 1 + store->paddle_x, PLAY_AREA - 1 - PADDLE_H, store->paddle_width > PADDLE_W ? paddle_w : paddle);
 
     // bricks
     for (uint8_t i = 0; i != X_CNT * Y_CNT; i++)
     {
         if (store->bricks[i].type != 0)
         {
-            HAL::displayDrawBitmap(DISP_X_OFFSET + store->bricks[i].x, store->bricks[i].y, store->bricks[i].type == 2 ? brick2 : brick);
+            HAL::displayDrawBitmap(DISP_X_OFFSET + store->disp_x_offset + store->bricks[i].x, store->bricks[i].y, store->bricks[i].type == 2 ? brick2 : brick);
         }
     }
 
     // ball
 
-    HAL::displayDrawBitmap(DISP_X_OFFSET + store->ball_x - BALL_R, store->ball_y - BALL_R, ball6);
+    HAL::displayDrawBitmap(DISP_X_OFFSET + store->disp_x_offset + store->ball_x - BALL_R, store->ball_y - BALL_R, ball6);
 
     // surprise
 
@@ -79,9 +79,9 @@ void breakout_render(Breakout_store_t *store)
     {
         const uint8_t *bitmap = surprises[surprise_p->type - 1].bitmap;
 
-        HAL::displayDrawBitmap(DISP_X_OFFSET + surprise_p->x - bitmap[0] / 2, surprise_p->y - bitmap[1] / 2, bitmap);
+        HAL::displayDrawBitmap(DISP_X_OFFSET + store->disp_x_offset + surprise_p->x - bitmap[0] / 2, surprise_p->y - bitmap[1] / 2, bitmap);
 
-        float x0 = DISP_X_OFFSET + surprise_p->x;
+        float x0 = DISP_X_OFFSET + store->disp_x_offset + surprise_p->x;
         float y0 = surprise_p->y;
 
         HAL::displaySetColor(11);
@@ -95,12 +95,12 @@ void breakout_render(Breakout_store_t *store)
     if (surprise_p->type == SURPRISE_BOMB && surprise_p->status == SURPRISE_STATUS_RUN)
     {
         HAL::displaySetColor(6);
-        HAL::displayDrawCircle(DISP_X_OFFSET + surprise_p->x, surprise_p->y, surprise_p->progress);
+        HAL::displayDrawCircle(DISP_X_OFFSET + store->disp_x_offset + surprise_p->x, surprise_p->y, surprise_p->progress);
     }
     if (surprise_p->type == SURPRISE_RAM && surprise_p->status == SURPRISE_STATUS_RUN)
     {
         HAL::displaySetColor(6);
-        HAL::displayDrawCircle(DISP_X_OFFSET + store->ball_x - 1, store->ball_y - 1, 6);
+        HAL::displayDrawCircle(DISP_X_OFFSET + store->disp_x_offset + store->ball_x - 1, store->ball_y - 1, 6);
     }
 
     // fps
@@ -108,20 +108,20 @@ void breakout_render(Breakout_store_t *store)
     char text[32];
     HAL::displaySetColor(5);
     int16_t count = sprintf(text, "fps %d", store->fps);
-    HAL::displaySetCursor(DISP_X_OFFSET + (DISP_X - count * HAL::getFontCharX()) / 2, 0);
+    HAL::displaySetCursor(DISP_X_OFFSET + store->disp_x_offset + (DISP_X - count * HAL::getFontCharX()) / 2, 0);
     HAL::displayPrint(text);
 
     // score
     HAL::displaySetColor(9);
     count = sprintf(text, "score %d", store->score);
-    HAL::displaySetCursor(DISP_X_OFFSET + (DISP_X - count * HAL::getFontCharX()) / 2, DISP_Y - 12);
+    HAL::displaySetCursor(DISP_X_OFFSET + store->disp_x_offset + (DISP_X - count * HAL::getFontCharX()) / 2, DISP_Y - 12);
     HAL::displayPrint(text);
 
     if (store->game_state == GAME_STATE_RDY)
     {
         HAL::displaySetColor(14);
         int16_t count = sprintf(text, "Get ready!");
-        HAL::displaySetCursor(DISP_X_OFFSET + (DISP_X - count * HAL::getFontCharX()) / 2, DISP_Y / 2 + 5);
+        HAL::displaySetCursor(DISP_X_OFFSET + store->disp_x_offset + (DISP_X - count * HAL::getFontCharX()) / 2, DISP_Y / 2 + 5);
         HAL::displayPrint(text);
     }
 
@@ -129,7 +129,7 @@ void breakout_render(Breakout_store_t *store)
     {
         HAL::displaySetColor(4);
         int16_t count = sprintf(text, "Game over!");
-        HAL::displaySetCursor(DISP_X_OFFSET + (DISP_X - count * HAL::getFontCharX()) / 2, DISP_Y / 2 + 5);
+        HAL::displaySetCursor(DISP_X_OFFSET + store->disp_x_offset + (DISP_X - count * HAL::getFontCharX()) / 2, DISP_Y / 2 + 5);
         HAL::displayPrint(text);
     }
 
@@ -137,7 +137,7 @@ void breakout_render(Breakout_store_t *store)
     {
         HAL::displaySetColor(15);
         int16_t count = sprintf(text, "You win!");
-        HAL::displaySetCursor(DISP_X_OFFSET + (DISP_X - count * HAL::getFontCharX()) / 2, DISP_Y / 2 + 5);
+        HAL::displaySetCursor(DISP_X_OFFSET + store->disp_x_offset + (DISP_X - count * HAL::getFontCharX()) / 2, DISP_Y / 2 + 5);
         HAL::displayPrint(text);
     }
 }
