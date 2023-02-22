@@ -24,7 +24,7 @@ void generateSurprise(Breakout_store_t * p) {
 
     surprise_p->timestamp = 2000 + HAL::getRandom(4000) + HAL::getTimeStamp();
     surprise_p->lifetime = 15000;
-    surprise_p->type = 1 + HAL::getRandom(SURPRISE_MAX - 1);
+    surprise_p->type = SURPRISE_PENTA; //1 + HAL::getRandom(SURPRISE_MAX - 1);
 
     if (surprise_p->type > 0) {
         ( * surprises[surprise_p->type - 1].generate)(surprise_p, p);

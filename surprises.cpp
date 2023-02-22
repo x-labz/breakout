@@ -80,3 +80,32 @@ void bomb_run(Surprise_t * surprise_p, Breakout_store_t * p) {
          }
     }
 }
+
+void penta_hit(Surprise_t * surprise_p, Breakout_store_t * p) {
+    surprise_p->lifetime = 5000;
+    surprise_p->progress = 250;
+}
+
+void penta_run(Surprise_t * surprise_p, Breakout_store_t * p) {
+    if (surprise_p->progress % 50 == 0 && surprise_p->progress > 0 ) {
+        uint8_t results[16] ;
+        uint8_t resultIndex = 0;
+        for(uint16_t i=0; i!= X_CNT * Y_CNT; i++) {
+            if ( p->bricks[i].type == BRICK_REBORN ) p->bricks[i].type = BRICK_LIGHT ;
+            if ( p->bricks[i].type == BRICK_OFF ) {
+                results[resultIndex] = i;
+                resultIndex++;
+            }
+        }
+        if (resultIndex > 0) {
+            uint8_t targetIndex = HAL::getRandom(resultIndex-1);
+            p->bricks[results[targetIndex]].type = BRICK_REBORN;
+        }
+    }
+    surprise_p->progress--;
+    if (surprise_p->progress == 0) {
+        surprise_p->status = SURPRISE_STATUS_OFF;
+        surprise_p->type = SURPRISE_NONE;
+    }
+    
+}

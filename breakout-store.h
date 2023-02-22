@@ -7,7 +7,8 @@
 enum {
     BRICK_OFF,
     BRICK_LIGHT,
-    BRICK_MEDIUM
+    BRICK_MEDIUM,
+    BRICK_REBORN
 };
 
 enum {
@@ -33,6 +34,7 @@ enum {
     SURPRISE_INC_PADDLE_W,
     SURPRISE_BOMB,
     SURPRISE_RAM,
+    SURPRISE_PENTA,
     SURPRISE_MAX
 };
 
@@ -61,6 +63,7 @@ typedef struct {
     bool disableBrickBounce;
     uint8_t game_state;
     Brick_t bricks[X_CNT * Y_CNT];
+    uint8_t brick_reborn_idx;
     uint16_t fps;
     int16_t paddle_x;
     int16_t paddle_speed;

@@ -20,11 +20,11 @@ void breakout_render_start(void)
     HAL::displaySetColor(9);
     char text[32];
     int16_t count = sprintf(text, "b r e a k o u t +");
-    HAL::displaySetCursor((DISP_TOTAL_X - count * HAL::getFontCharX()) / 2 , 20);
+    HAL::displaySetCursor((DISP_TOTAL_X - count * HAL::getFontCharX()) / 2, 20);
     HAL::displayPrint(text);
     HAL::displaySetColor(15);
     count = sprintf(text, "x-labz.net");
-    HAL::displaySetCursor((DISP_TOTAL_X - count * HAL::getFontCharX()) / 2 , DISP_Y - 25);
+    HAL::displaySetCursor((DISP_TOTAL_X - count * HAL::getFontCharX()) / 2, DISP_Y - 25);
     HAL::displayPrint(text);
     HAL::displayDrawBitmap((DISP_TOTAL_X - breakout_logo[0]) / 2 - 6, (DISP_Y - breakout_logo[1]) / 2, breakout_logo);
 }
@@ -62,9 +62,16 @@ void breakout_render(Breakout_store_t *store)
     // bricks
     for (uint8_t i = 0; i != X_CNT * Y_CNT; i++)
     {
-        if (store->bricks[i].type != 0)
+        uint16_t x = DISP_X_OFFSET + store->disp_x_offset + store->bricks[i].x, 
+        y = store->bricks[i].y;
+        if (store->bricks[i].type != BRICK_OFF && store->bricks[i].type != BRICK_REBORN)
         {
-            HAL::displayDrawBitmap(DISP_X_OFFSET + store->disp_x_offset + store->bricks[i].x, store->bricks[i].y, store->bricks[i].type == 2 ? brick2 : brick);
+            HAL::displayDrawBitmap(x, y, store->bricks[i].type == 2 ? brick2 : brick);
+        }
+        if (store->bricks[i].type == BRICK_REBORN)
+        {
+            HAL::displaySetColor(7);
+            HAL::displayDrawLine(x,y,x+W,y) ;
         }
     }
 

@@ -573,6 +573,15 @@
 		},
 		"\\README.md": {
 			"sdcard": false
+		},
+		"\\ram copy.png": {
+			"sdcard": false
+		},
+		"\\penta.png": {
+			"sdcard": false
+		},
+		"\\penta.h": {
+			"sdcard": false
 		}
 	},
 	"ideVersion": 10000,

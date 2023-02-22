@@ -33,6 +33,7 @@ void breakout_init(Breakout_store_t * p) {
         .disableBrickBounce = false,
         .game_state = GAME_STATE_START,
         .bricks = {},
+        .brick_reborn_idx = 0,
         .fps = 0,
         .paddle_x = (int16_t)((DISP_X - store->paddle_width) / 2),
         .paddle_speed = 0,
