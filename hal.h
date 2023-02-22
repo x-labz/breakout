@@ -6,5 +6,10 @@
 
 #include "hal-pokitto.h"
 
+#else  
+
+#include "hal-watch.h"
+
 #endif  // COMPILE_TO_POKITTO
+
 

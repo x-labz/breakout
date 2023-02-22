@@ -11,6 +11,8 @@ public:
         lastAButton = false;
     }
     static inline bool lastAButton;
+    static inline uint8_t invisibleColor ;
+    static inline uint8_t color;
 
     static void init(void);
     static void displaySetColor(uint8_t color);
