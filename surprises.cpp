@@ -62,7 +62,7 @@ void ram_run(Surprise_t * surprise_p, Breakout_store_t * p) {
 
 void bomb_run(Surprise_t * surprise_p, Breakout_store_t * p) {
     surprise_p->progress += SURPRISE_BOMB_SPEED ;
-    if (surprise_p->progress > 50) {
+    if (surprise_p->progress > SURPRISE_BOMB_DIST) {
         surprise_p->status = SURPRISE_STATUS_OFF;
         surprise_p->type = SURPRISE_NONE;
     }
