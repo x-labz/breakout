@@ -2,54 +2,7 @@
 
 #include "inttypes.h"
 #include "geometry-helpers.h"
-
-// #define DASH_HEIGHT 20
-// #define DISP_X 80
-// #define DISP_Y 160 
-// #define PLAY_AREA DISP_Y - DASH_HEIGHT 
-
-// #define X_CNT 5
-// #define X_OFF 1
-// #define X_GAP 16
-// #define W 14
-
-// #define Y_CNT 6
-// #define Y_OFF 10
-// #define Y_GAP 12
-// #define H 10
-
-// #define PADDLE_W 20
-// #define PADDLE_H 5
-// #define BALL_R 2
-
-
-#define DASH_HEIGHT 15
-#define DISP_TOTAL_X 220
-#define DISP_X 180
-#define DISP_X_OFFSET (DISP_TOTAL_X - DISP_X) / 2
-#define DISP_Y 176
-#define PLAY_AREA DISP_Y - DASH_HEIGHT 
-
-#define X_GAP 14
-#define W 12
-#define X_CNT (uint8_t)(DISP_X / X_GAP)
-#define X_OFF (uint8_t)((DISP_X - (X_CNT * X_GAP)) / 2) 
-
-#define Y_CNT 6
-#define Y_OFF 10
-#define Y_GAP 10
-#define H  8
-
-#define PADDLE_W 20
-#define PADDLE_H 5
-#define BALL_R 3
-
-#define SURPRISE_Y_MIN Y_CNT * Y_GAP + Y_OFF
-#define SURPRISE_Y_HEIGHT  35
-#define SURPRISE_R 10
-#define SURPRISE_LIN_NUM 18
-
-#define SURPRISE_BOMB_SPEED 2
+#include "hal.h"
 
 enum {
     BRICK_OFF,
@@ -117,5 +70,8 @@ typedef struct {
     float ball_speed_y;
     bool coll_brick_valid;
     uint8_t paddle_width;
+    uint8_t shake;
+    int8_t shake_dir;
+    int8_t disp_x_offset;
 }
 Breakout_store_t;
