@@ -14,6 +14,7 @@
 #include "math-helpers.h"
 #include "surprises.h"
 #include "hal.h"
+#include "breakout-render-helpers.h"
 
 void breakout_render_start(void)
 {
@@ -62,16 +63,25 @@ void breakout_render(Breakout_store_t *store)
     // bricks
     for (uint8_t i = 0; i != X_CNT * Y_CNT; i++)
     {
-        uint16_t x = DISP_X_OFFSET + store->disp_x_offset + store->bricks[i].x, 
-        y = store->bricks[i].y;
+        uint16_t x = DISP_X_OFFSET + store->disp_x_offset + store->bricks[i].x,
+                 y = store->bricks[i].y;
         if (store->bricks[i].type != BRICK_OFF && store->bricks[i].type != BRICK_REBORN)
         {
             HAL::displayDrawBitmap(x, y, store->bricks[i].type == 2 ? brick2 : brick);
         }
         if (store->bricks[i].type == BRICK_REBORN)
         {
+            uint8_t progress = ( PENTA_ANIM_STEPS-1) * (float)(store->surprise.progress % SURPRISE_PENTA_BRICK_PROGRESS) / (float)SURPRISE_PENTA_BRICK_PROGRESS;
+            uint8_t index = (PENTA_ANIM_STEPS -1 - progress) * 2 ;
+      
+            float w_mul = penta_anim[index];
+            float h_mul = penta_anim[index + 1];
+            uint8_t w0 = brick[0];
+            uint8_t h0 = brick[1];
+            uint8_t w = w0 * w_mul;
+            uint8_t h = h0 * h_mul;
             HAL::displaySetColor(7);
-            HAL::displayDrawLine(x,y,x+W,y) ;
+            HAL::displayDrawRect(x + (w0 - w) / 2, y + (h0 - h) / 2, w, h);
         }
     }
 

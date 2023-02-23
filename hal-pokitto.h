@@ -30,6 +30,8 @@
 
 #define SURPRISE_BOMB_SPEED 2
 #define SURPRISE_BOMB_DIST 50
+#define SURPRISE_PENTA_BRICK_COUNT 5
+#define SURPRISE_PENTA_BRICK_PROGRESS 25
 
 #define HEARTH_X_ADVANCE 0
 #define HEARTH_Y_ADVANCE 16
@@ -59,6 +61,7 @@ public:
     static void displayDrawColumn(int16_t x, int16_t y, int16_t len) ; 
     static void displayDrawCircle(int16_t x, int16_t y, int16_t r);
     static void displayDrawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+    static void displayDrawRect(int16_t x0, int16_t y0, int16_t w, int16_t h);
     static uint16_t getFontCharX(void);
     static int16_t getPaddlePitch(void);
     static uint32_t getTimeStamp(void);

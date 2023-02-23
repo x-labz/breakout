@@ -582,6 +582,9 @@
 		},
 		"\\penta.h": {
 			"sdcard": false
+		},
+		"\\breakout-render-helpers.h": {
+			"sdcard": false
 		}
 	},
 	"ideVersion": 10000,
