@@ -78,7 +78,7 @@ void breakout_render(Breakout_store_t *store)
             float h_mul = penta_anim[index + 1];
             uint8_t w0 = brick[0];
             uint8_t h0 = brick[1];
-            uint8_t w = w0 * w_mul;
+            uint8_t w = w0 * w_mul -1;
             uint8_t h = h0 * h_mul;
             HAL::displaySetColor(7);
             HAL::displayDrawRect(x + (w0 - w) / 2, y + (h0 - h) / 2, w, h);

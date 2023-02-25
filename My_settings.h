@@ -60,17 +60,17 @@
 
 // Choose whether to enable sound or not.
 // Optional. Can be 0 or 1. Default is 1.
-#define PROJ_ENABLE_SOUND 1
+// #define PROJ_ENABLE_SOUND 1
 
 
 // Enable Pokitto::Sound::playSFX
 // Optional. Comment to disable.
-#define PROJ_ENABLE_SFX
+// #define PROJ_ENABLE_SFX
 
 
 // Enable streaming music from SD
 // Optional. Comment to disable.
-#define PROJ_ENABLE_SD_MUSIC
+// #define PROJ_ENABLE_SD_MUSIC
 
 
 // Defines the rate your audio has been encoded with.
@@ -78,24 +78,24 @@
 // and Flash space.
 // Optional. Default is 22050.
 #define PROJ_AUD_FREQ 8000
-
+#define NUM_CHANNELS 3 
 
 // Automatically restart streaming music when it ends.
 // Optional. Default is 1.
-#define PROJ_STREAM_LOOP 1
+// #define PROJ_STREAM_LOOP 1
 
 
 // Tell the sound system which SD library to use.
 // If you use one of these libraries, it's important that sound
 // is streamed using the same one.
 // Optional. Default is PokittoDisk (PFFS).
-// #define PROJ_SDFS_STREAMING
-// #define PROJ_FILE_STREAMING
+#define PROJ_SDFS_STREAMING
+#define PROJ_FILE_STREAMING
 
 
 // Enable Synth
 // Optional. Can be 0 or 1. Default is 0.
-#define PROJ_ENABLE_SYNTH 0
+// #define PROJ_ENABLE_SYNTH 0
 
 
 // ---- SECTION: TASMODE ----

@@ -88,20 +88,24 @@ void penta_hit(Surprise_t * surprise_p, Breakout_store_t * p) {
 
 void penta_run(Surprise_t * surprise_p, Breakout_store_t * p) {
     surprise_p->progress--;
-    if (surprise_p->progress % SURPRISE_PENTA_BRICK_PROGRESS == 0  ) {
+    if (surprise_p->progress % SURPRISE_PENTA_BRICK_PROGRESS == 0 && surprise_p->progress > 0 ) {
         uint8_t results[16] ;
         uint8_t resultIndex = 0;
-        for(uint16_t i=0; i!= X_CNT * Y_CNT; i++) {
+        for(uint16_t i=0; i!= X_CNT * Y_CNT && resultIndex < 15; i++) {
             if ( p->bricks[i].type == BRICK_REBORN ) p->bricks[i].type = BRICK_LIGHT ;
             if ( p->bricks[i].type == BRICK_OFF ) {
                 results[resultIndex] = i;
                 resultIndex++;
             }
         }
-        if (resultIndex > 0) {
+        if (resultIndex == 1 || resultIndex == 2) {
+            p->bricks[results[0]].type = BRICK_REBORN;
+        }
+         if (resultIndex > 2) {
             uint8_t targetIndex = HAL::getRandom(resultIndex-1);
             p->bricks[results[targetIndex]].type = BRICK_REBORN;
         }
+        
     }
     
     if (surprise_p->progress == 0) {

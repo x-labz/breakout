@@ -63,7 +63,7 @@ typedef struct {
     bool disableBrickBounce;
     uint8_t game_state;
     Brick_t bricks[X_CNT * Y_CNT];
-    uint8_t brick_reborn_idx;
+    // uint8_t brick_reborn_idx;
     uint16_t fps;
     int16_t paddle_x;
     int16_t paddle_speed;

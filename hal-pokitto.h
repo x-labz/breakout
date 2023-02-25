@@ -48,12 +48,16 @@ public:
     HAL()
     {
         lastAButton = false;
+        sfx_channel = 0;
     }
     static inline bool lastAButton;
     static inline uint8_t invisibleColor ;
     static inline uint8_t color;
+    static inline uint8_t sfx_channel;
 
     static void init(void);
+    static void playAudioFile(uint8_t id);
+    static void playSfx(uint8_t id);
     static void displaySetColor(uint8_t color);
     static void displaySetCursor(uint16_t x, uint16_t y);
     static void displayPrint(char * text);
@@ -66,5 +70,5 @@ public:
     static int16_t getPaddlePitch(void);
     static uint32_t getTimeStamp(void);
     static bool getAButton(void);
-    static int16_t getRandom(uint16_t max);
+    static uint16_t getRandom(uint16_t max);
 };

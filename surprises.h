@@ -14,7 +14,6 @@ typedef struct {
     void( * run)(Surprise_t * surprise, Breakout_store_t * p);
     void( * destroy)(Surprise_t * surprise, Breakout_store_t * p);
     const uint8_t * bitmap;
-
 }
 Surprise_def_t;
 

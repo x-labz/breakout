@@ -6,6 +6,7 @@
 #include "patterns.h"
 #include "stdio.h"
 #include "breakout_systems_surprises.h"
+#include "audio-samples.h"
 
 Breakout_store_t * store;
 
@@ -33,7 +34,6 @@ void breakout_init(Breakout_store_t * p) {
         .disableBrickBounce = false,
         .game_state = GAME_STATE_START,
         .bricks = {},
-        .brick_reborn_idx = 0,
         .fps = 0,
         .paddle_x = (int16_t)((DISP_X - store->paddle_width) / 2),
         .paddle_speed = 0,
@@ -66,6 +66,7 @@ void calc_fps(void) {
 }
 
 float bounce(float speed) {
+    HAL::playSfx(AUDIO_SFX_KNOCK);
     float variance = HAL::getRandom(100) / 1000;
 
     return speed * -(1 + variance);
@@ -124,6 +125,7 @@ void check_fall(void) {
     //  int16_t paddle_y = DISP_Y - 1 - DASH_HEIGHT - PADDLE_H;
     if (store->ball_y > (DISP_Y - 1 - DASH_HEIGHT) && store->ball_speed_y > 0 && store->lives == 0) {
         store->game_state = GAME_STATE_GAME_OVER;
+        HAL::playAudioFile(AUDIO_GAME_OVER);
     }
 }
 
@@ -137,6 +139,7 @@ void check_win(void) {
     }
     if (count == 0) {
         store->game_state = GAME_STATE_WIN;
+        HAL::playAudioFile(AUDIO_WIN);
     }
 }
 
@@ -268,6 +271,7 @@ void calc_brick_coll(void) {
                 }
                 store->score += store->lastBounceWasBrick ? 20 : 10;
                 store->lastBounceWasBrick = true;
+                HAL::playSfx(AUDIO_SFX_KNOCK) ;
             }
         }
     }
@@ -279,6 +283,7 @@ void handleStart(void) {
     }
     if (store->game_state == GAME_STATE_START && HAL::getAButton()) {
         store->game_state = GAME_STATE_RDY;
+        HAL::playAudioFile(AUDIO_GET_READY);
     }
 }
 

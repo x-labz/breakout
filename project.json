@@ -585,6 +585,120 @@
 		},
 		"\\breakout-render-helpers.h": {
 			"sdcard": false
+		},
+		"\\breakout.eeprom": {
+			"sdcard": false
+		},
+		"\\untitled.wav": {
+			"sdcard": false
+		},
+		"\\untitled.raw": {
+			"sdcard": false
+		},
+		"\\music": {
+			"sdcard": false
+		},
+		"\\music\\untitled.raw": {
+			"sdcard": false
+		},
+		"\\music\\breakout+untitled.raw": {
+			"sdcard": false
+		},
+		"\\audio-samples.h": {
+			"sdcard": false
+		},
+		"\\music\\breakout+0.raw": {
+			"sdcard": false
+		},
+		"\\You_Win_k.wav": {
+			"sdcard": false
+		},
+		"\\Game_Over_k.wav": {
+			"sdcard": false
+		},
+		"\\Get_Started_k.wav": {
+			"sdcard": false
+		},
+		"\\music\\You_Win_k.raw": {
+			"sdcard": false
+		},
+		"\\music\\Game_Over_k.raw": {
+			"sdcard": false
+		},
+		"\\music\\Get_Started_k.raw": {
+			"sdcard": false
+		},
+		"\\music\\breakout+1.raw": {
+			"sdcard": false
+		},
+		"\\music\\breakout+2.raw": {
+			"sdcard": false
+		},
+		"\\music\\breakout+": {
+			"sdcard": false
+		},
+		"\\music\\breakout+\\breakout+0.raw": {
+			"sdcard": false
+		},
+		"\\music\\breakout+\\breakout+1.raw": {
+			"sdcard": false
+		},
+		"\\music\\breakout+\\breakout+2.raw": {
+			"sdcard": false
+		},
+		"\\music\\breakout+\\0.raw": {
+			"sdcard": false
+		},
+		"\\music\\breakout+\\1.raw": {
+			"sdcard": false
+		},
+		"\\music\\breakout+\\2.raw": {
+			"sdcard": false
+		},
+		"\\knock.raw": {
+			"sdcard": false
+		},
+		"\\sounds": {
+			"sdcard": false
+		},
+		"\\sounds\\knock.raw": {
+			"sdcard": false
+		},
+		"\\sounds\\knock.wav": {
+			"sdcard": false
+		},
+		"\\rawtobin.js": {
+			"sdcard": false
+		},
+		"\\utils": {
+			"sdcard": false
+		},
+		"\\utils\\rawtobin.js": {
+			"sdcard": false
+		},
+		"\\sound-knock.h": {
+			"sdcard": false
+		},
+		"\\sounds\\Get_Started_k.wav": {
+			"sdcard": false
+		},
+		"\\sounds\\Game_Over_k.wav": {
+			"sdcard": false
+		},
+		"\\sounds\\You_Win_k.wav": {
+			"sdcard": false
+		},
+		"\\sounds\\Game_Over_k.wav_": {
+			"sdcard": false
+		},
+		"\\sounds\\Get_Started_k.wav_": {
+			"sdcard": false
+		},
+		"\\sounds\\knock.wav_": {
+			"sdcard": false
+		},
+		"\\sounds\\You_Win_k.wav_": {
+			"sdcard": false
 		}
 	},
 	"ideVersion": 10000,

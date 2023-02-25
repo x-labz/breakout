@@ -1,6 +1,8 @@
 #include <Pokitto.h>
 #include <PokittoFonts.h>
 #include "hal.h"
+#include <LibAudio>
+#include "audio-samples.h"
 
 using PC = Pokitto::Core;
 using PD = Pokitto::Display;
@@ -10,6 +12,27 @@ void HAL::init(void) {
     PD::loadRGBPalette(palettePico);
     PD::setFont(fontZXSpec);
     PD::setInvisibleColor(0);
+}
+
+void HAL::playAudioFile(uint8_t id) {
+    auto music = Audio::play < 2 > (audio_filenames[id]);
+
+    if (music) {
+        music->setLoop(false);
+    }
+}
+
+void HAL::playSfx(uint8_t id) {
+
+    switch (id) {
+        case 0:
+            {
+                HAL::sfx_channel ? Audio::play < 1 > (sfx_knock) : Audio::play < 0 > (sfx_knock);
+            }
+    };
+
+
+    HAL::sfx_channel = (HAL::sfx_channel + 1) & 0x01;
 }
 
 void HAL::displaySetColor(uint8_t color) {
@@ -78,6 +101,6 @@ bool HAL::getAButton(void) {
     return result;
 }
 
-int16_t HAL::getRandom(uint16_t max) {
+uint16_t HAL::getRandom(uint16_t max) {
     return (rand() % max);
 }
