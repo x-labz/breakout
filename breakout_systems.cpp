@@ -118,6 +118,7 @@ void bounce_wall(void) {
         store->disableBrickBounce = false;
 
         store->shake = SHAKE_DURATION ;
+        HAL::playAudioFile(AUDIO_DEFEAT) ;
     }
 }
 

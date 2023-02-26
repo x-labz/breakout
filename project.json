@@ -699,6 +699,33 @@
 		},
 		"\\sounds\\You_Win_k.wav_": {
 			"sdcard": false
+		},
+		"\\sounds\\appear.wav": {
+			"sdcard": false
+		},
+		"\\sounds\\bomb.wav": {
+			"sdcard": false
+		},
+		"\\sounds\\defeat.wav": {
+			"sdcard": false
+		},
+		"\\sounds\\Get_Ready.wav": {
+			"sdcard": false
+		},
+		"\\sounds\\pickup.wav": {
+			"sdcard": false
+		},
+		"\\music\\breakout+\\3.raw": {
+			"sdcard": false
+		},
+		"\\music\\breakout+\\5.raw": {
+			"sdcard": false
+		},
+		"\\music\\breakout+\\4.raw": {
+			"sdcard": false
+		},
+		"\\music\\breakout+\\6.raw": {
+			"sdcard": false
 		}
 	},
 	"ideVersion": 10000,

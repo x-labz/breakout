@@ -3,6 +3,7 @@
 #include "hal.h"
 #include "surprises.h"
 #include "math.h"
+#include "audio-samples.h"
 
 void surpriseSystem(Breakout_store_t * p) {
     generateSurprise(p);
@@ -73,6 +74,7 @@ void checkSurpriseHit(Breakout_store_t * p) {
         surprise_p->timestamp = now;
         if (surprise_p->type > 0) {
             ( * surprises[surprise_p->type - 1].hit)(surprise_p, p);
+            HAL::playAudioFile(surprise_p->type == SURPRISE_BOMB ? AUDIO_BOMB : AUDIO_PICKUP ) ;
         }
     }
 }

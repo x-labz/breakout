@@ -1,4 +1,6 @@
 #include "surprises.h"
+#include "audio-samples.h"
+#include "hal.h"
 
 void surprise_dummy_handler(Surprise_t * surprise_p, Breakout_store_t * p) {
 };
@@ -104,6 +106,7 @@ void penta_run(Surprise_t * surprise_p, Breakout_store_t * p) {
          if (resultIndex > 2) {
             uint8_t targetIndex = HAL::getRandom(resultIndex-1);
             p->bricks[results[targetIndex]].type = BRICK_REBORN;
+            HAL::playAudioFile(AUDIO_APPEAR);
         }
         
     }
