@@ -726,6 +726,12 @@
 		},
 		"\\music\\breakout+\\6.raw": {
 			"sdcard": false
+		},
+		"\\breakout_render_intro.cpp": {
+			"sdcard": false
+		},
+		"\\breakout_render_intro.h": {
+			"sdcard": false
 		}
 	},
 	"ideVersion": 10000,

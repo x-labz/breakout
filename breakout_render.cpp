@@ -15,6 +15,8 @@
 #include "surprises.h"
 #include "hal.h"
 #include "breakout-render-helpers.h"
+#include "breakout_render_intro.h"
+
 
 void breakout_render_start(void)
 {
@@ -36,6 +38,11 @@ void breakout_render(Breakout_store_t *store)
     if (store->game_state == GAME_STATE_START)
     {
         breakout_render_start();
+        return;
+    }
+    
+    if (store->game_state == GAME_STATE_INTRO) {
+        render_intro();
         return;
     }
 

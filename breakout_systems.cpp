@@ -32,7 +32,7 @@ void breakout_init(Breakout_store_t * p) {
         .score = 0,
         .lastBounceWasBrick = false,
         .disableBrickBounce = false,
-        .game_state = GAME_STATE_START,
+        .game_state = GAME_STATE_INTRO,
         .bricks = {},
         .fps = 0,
         .paddle_x = (int16_t)((DISP_X - store->paddle_width) / 2),
@@ -279,6 +279,9 @@ void calc_brick_coll(void) {
 }
 
 void handleStart(void) {
+    if (store->game_state == GAME_STATE_INTRO && HAL::getAButton()) {
+        store->game_state = GAME_STATE_START;
+    }
     if (store->game_state == GAME_STATE_RDY && HAL::getAButton()) {
         store->game_state = GAME_STATE_RUN;
     }

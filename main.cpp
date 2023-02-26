@@ -22,6 +22,7 @@ int main()
         bool keepRunning = breakout_run();
         if (!keepRunning) {
             breakout_init(&store);
+            store.game_state = GAME_STATE_START;
         }
     }
 

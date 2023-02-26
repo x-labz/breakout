@@ -12,6 +12,7 @@ enum {
 };
 
 enum {
+    GAME_STATE_INTRO,
     GAME_STATE_START,
     GAME_STATE_RDY,
     GAME_STATE_RUN,
