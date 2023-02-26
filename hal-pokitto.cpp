@@ -76,7 +76,7 @@ void HAL::displayDrawRect(int16_t x0, int16_t y0, int16_t w, int16_t h) {
 }
 
 uint16_t HAL::getFontCharX(void) {
-    return fontZXSpec[0];
+    return fontZXSpec[0]-2;
 }
 
 int16_t HAL::getPaddlePitch(void) {
