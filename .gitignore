@@ -1,5 +1,6 @@
 .pio
 
-*.elf
-*.bin
+**/*.elf
+**/*.bin
+**/*.eeprom
 
