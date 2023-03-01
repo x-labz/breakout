@@ -41,6 +41,8 @@
 #define SHAKE_OFFSET 1
 #define SHAKE_DURATION 35
 
+#define DISABLE_INTRO true
+
 class HAL
 {
 

@@ -279,7 +279,7 @@ void calc_brick_coll(void) {
 }
 
 void handleStart(void) {
-    if (store->game_state == GAME_STATE_INTRO && HAL::getAButton()) {
+    if ( !DISABLE_INTRO && store->game_state == GAME_STATE_INTRO && HAL::getAButton() || DISABLE_INTRO) {
         store->game_state = GAME_STATE_START;
     }
     if (store->game_state == GAME_STATE_RDY && HAL::getAButton()) {
@@ -293,8 +293,6 @@ void handleStart(void) {
 
 bool handleGameOver(void) {
     if ((store->game_state == GAME_STATE_GAME_OVER || store->game_state == GAME_STATE_WIN) && HAL::getAButton()) {
-        //  breakout_init((Breakout_store_t * ) NULL);
-        //  store->game_state = GAME_STATE_RDY ;
         return false;
     }
     return true;
